@@ -1,8 +1,600 @@
-  * url: path to your self-hosted game (e.g. "/games/snake/index.html")
-  * icon: any emoji or short string for the thumbnail
-  */
-  const GAMES = [ { id: 1, title: "2048", cat: "classic", icon: "🎮", desc: "its 2048.", url: "/UnblockedStudy/Games/2048/index.html" },
-  const GAMES = [ { id: 1, title: "2048", cat: "classic", icon: "🎮", desc: "its 2048.", url: "https://aidantangtps.github.io/UnblockedStudy/Games/2048/index.html" },
-];
 
-const grid     = document.getElementById('grid');
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>UNBLOCKMATH // ARCADE</title>
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg:        #0a0a0f;
+      --bg2:       #0f0f1a;
+      --panel:     #12121f;
+      --border:    #1e1e3a;
+      --neon-g:    #00ff88;
+      --neon-b:    #00cfff;
+      --neon-y:    #ffe600;
+      --neon-r:    #ff3c6e;
+      --neon-p:    #bf5fff;
+      --text:      #c8d0e0;
+      --muted:     #5a6070;
+      --font-px:   'Press Start 2P', monospace;
+      --font-mono: 'Share Tech Mono', monospace;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font-mono);
+      font-size: 14px;
+      line-height: 1.6;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* ── SCANLINES ── */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background: repeating-linear-gradient(
+        to bottom,
+        transparent 0px,
+        transparent 3px,
+        rgba(0,0,0,0.18) 3px,
+        rgba(0,0,0,0.18) 4px
+      );
+      pointer-events: none;
+      z-index: 9999;
+    }
+
+    /* ── NOISE OVERLAY ── */
+    body::after {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+      opacity: 0.4;
+      pointer-events: none;
+      z-index: 9998;
+    }
+
+    /* ── HEADER ── */
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: var(--bg);
+      border-bottom: 2px solid var(--border);
+      padding: 0 1.5rem;
+    }
+
+    .header-inner {
+      max-width: 1280px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+      height: 64px;
+    }
+
+    .logo {
+      font-family: var(--font-px);
+      font-size: 0.65rem;
+      line-height: 1.8;
+      letter-spacing: 0.05em;
+      color: var(--neon-g);
+      text-shadow: 0 0 8px var(--neon-g), 0 0 20px rgba(0,255,136,0.3);
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .logo span {
+      color: var(--neon-b);
+      text-shadow: 0 0 8px var(--neon-b), 0 0 20px rgba(0,207,255,0.3);
+    }
+
+    /* ── SEARCH ── */
+    .search-wrap {
+      flex: 1;
+      max-width: 360px;
+      position: relative;
+    }
+
+    .search-wrap::before {
+      content: '▶';
+      position: absolute;
+      left: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--neon-g);
+      font-size: 10px;
+      font-family: var(--font-px);
+    }
+
+    #search {
+      width: 100%;
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-left: 2px solid var(--neon-g);
+      color: var(--text);
+      font-family: var(--font-mono);
+      font-size: 14px;
+      padding: 0.55rem 0.75rem 0.55rem 2.2rem;
+      outline: none;
+      transition: border-color 0.15s, box-shadow 0.15s;
+    }
+
+    #search::placeholder { color: var(--muted); }
+
+    #search:focus {
+      border-color: var(--neon-g);
+      box-shadow: 0 0 0 1px var(--neon-g), inset 0 0 12px rgba(0,255,136,0.05);
+    }
+
+    /* ── INSERT COIN ── */
+    .coin-badge {
+      font-family: var(--font-px);
+      font-size: 0.45rem;
+      color: var(--neon-y);
+      text-shadow: 0 0 6px var(--neon-y);
+      border: 1px solid var(--neon-y);
+      padding: 5px 8px;
+      letter-spacing: 0.05em;
+      animation: blink 1.4s step-end infinite;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    @keyframes blink { 50% { opacity: 0; } }
+
+    /* ── MAIN ── */
+    main {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 1.5rem;
+    }
+
+    /* ── CATEGORY TABS ── */
+    .cat-bar {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+      margin-bottom: 1.5rem;
+      padding-bottom: 1rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .cat-btn {
+      font-family: var(--font-px);
+      font-size: 0.45rem;
+      letter-spacing: 0.05em;
+      padding: 7px 12px;
+      background: var(--panel);
+      border: 1px solid var(--border);
+      color: var(--muted);
+      cursor: pointer;
+      transition: all 0.12s;
+      text-transform: uppercase;
+      position: relative;
+    }
+
+    .cat-btn:hover {
+      color: var(--text);
+      border-color: var(--muted);
+    }
+
+    .cat-btn.active {
+      color: var(--bg);
+      background: var(--neon-g);
+      border-color: var(--neon-g);
+      box-shadow: 0 0 10px rgba(0,255,136,0.4), 0 0 20px rgba(0,255,136,0.15);
+      text-shadow: none;
+    }
+
+    .cat-btn[data-cat="action"].active   { background: var(--neon-r); border-color: var(--neon-r); box-shadow: 0 0 10px rgba(255,60,110,0.4); }
+    .cat-btn[data-cat="puzzle"].active   { background: var(--neon-b); border-color: var(--neon-b); box-shadow: 0 0 10px rgba(0,207,255,0.4); }
+    .cat-btn[data-cat="strategy"].active { background: var(--neon-p); border-color: var(--neon-p); box-shadow: 0 0 10px rgba(191,95,255,0.4); }
+    .cat-btn[data-cat="classic"].active  { background: var(--neon-y); border-color: var(--neon-y); box-shadow: 0 0 10px rgba(255,230,0,0.4); }
+
+    /* ── GRID ── */
+    #grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 1rem;
+    }
+
+    /* ── CARD ── */
+    .card {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      cursor: pointer;
+      transition: transform 0.1s, border-color 0.15s, box-shadow 0.15s;
+      animation: fadeIn 0.25s ease both;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border: 1px solid transparent;
+      transition: border-color 0.15s;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    .card:hover {
+      transform: translateY(-2px);
+      border-color: var(--accent, var(--neon-g));
+      box-shadow: 0 0 14px rgba(0,255,136,0.15), 0 4px 20px rgba(0,0,0,0.5);
+    }
+
+    @keyframes fadeIn { from { opacity:0; transform: translateY(6px); } to { opacity:1; transform: none; } }
+
+    /* Accent per category */
+    .card[data-cat="action"]   { --accent: var(--neon-r); }
+    .card[data-cat="action"]:hover   { box-shadow: 0 0 14px rgba(255,60,110,0.2), 0 4px 20px rgba(0,0,0,0.5); }
+    .card[data-cat="puzzle"]   { --accent: var(--neon-b); }
+    .card[data-cat="puzzle"]:hover   { box-shadow: 0 0 14px rgba(0,207,255,0.2), 0 4px 20px rgba(0,0,0,0.5); }
+    .card[data-cat="strategy"] { --accent: var(--neon-p); }
+    .card[data-cat="strategy"]:hover { box-shadow: 0 0 14px rgba(191,95,255,0.2), 0 4px 20px rgba(0,0,0,0.5); }
+    .card[data-cat="classic"]  { --accent: var(--neon-y); }
+    .card[data-cat="classic"]:hover  { box-shadow: 0 0 14px rgba(255,230,0,0.2), 0 4px 20px rgba(0,0,0,0.5); }
+
+    /* ── THUMBNAIL ── */
+    .thumb {
+      width: 100%;
+      height: 140px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-px);
+      font-size: 2.5rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .thumb::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: repeating-linear-gradient(
+        to bottom,
+        transparent 0px, transparent 2px,
+        rgba(0,0,0,0.2) 2px, rgba(0,0,0,0.2) 3px
+      );
+    }
+
+    .card[data-cat="all"]      .thumb { background: linear-gradient(135deg, #0d1f14, #0d1a22); }
+    .card[data-cat="action"]   .thumb { background: linear-gradient(135deg, #1f0d0d, #220d16); }
+    .card[data-cat="puzzle"]   .thumb { background: linear-gradient(135deg, #0d1320, #0d1c26); }
+    .card[data-cat="strategy"] .thumb { background: linear-gradient(135deg, #140d20, #1a0d26); }
+    .card[data-cat="classic"]  .thumb { background: linear-gradient(135deg, #201800, #26200d); }
+
+    /* ── CARD BODY ── */
+    .card-body {
+      padding: 0.85rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      flex: 1;
+    }
+
+    .card-top {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 0.5rem;
+    }
+
+    .card-title {
+      font-family: var(--font-px);
+      font-size: 0.55rem;
+      line-height: 1.8;
+      color: #e8eaf0;
+      letter-spacing: 0.03em;
+    }
+
+    .cat-tag {
+      font-family: var(--font-px);
+      font-size: 0.35rem;
+      padding: 3px 6px;
+      border: 1px solid;
+      white-space: nowrap;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+
+    .card[data-cat="action"]   .cat-tag { color: var(--neon-r); border-color: var(--neon-r); }
+    .card[data-cat="puzzle"]   .cat-tag { color: var(--neon-b); border-color: var(--neon-b); }
+    .card[data-cat="strategy"] .cat-tag { color: var(--neon-p); border-color: var(--neon-p); }
+    .card[data-cat="classic"]  .cat-tag { color: var(--neon-y); border-color: var(--neon-y); }
+
+    .card-desc {
+      font-size: 12px;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+
+    .play-btn {
+      margin-top: auto;
+      font-family: var(--font-px);
+      font-size: 0.5rem;
+      letter-spacing: 0.05em;
+      padding: 10px;
+      background: transparent;
+      border: 1px solid var(--accent, var(--neon-g));
+      color: var(--accent, var(--neon-g));
+      cursor: pointer;
+      text-align: center;
+      transition: all 0.12s;
+      text-shadow: 0 0 6px var(--accent, var(--neon-g));
+    }
+
+    .play-btn:hover {
+      background: var(--accent, var(--neon-g));
+      color: var(--bg);
+      text-shadow: none;
+      box-shadow: 0 0 12px var(--accent, var(--neon-g));
+    }
+
+    /* ── NO RESULTS ── */
+    #no-results {
+      display: none;
+      grid-column: 1/-1;
+      text-align: center;
+      padding: 4rem 1rem;
+      color: var(--muted);
+      font-family: var(--font-px);
+      font-size: 0.55rem;
+      line-height: 2.5;
+    }
+
+    /* ── MODAL ── */
+    #modal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(5,5,12,0.96);
+      z-index: 200;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 1rem;
+    }
+
+    #modal.active { display: flex; }
+
+    .modal-header {
+      width: 100%;
+      max-width: 900px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 0.75rem;
+      padding: 0 0.25rem;
+    }
+
+    #modal-title {
+      font-family: var(--font-px);
+      font-size: 0.6rem;
+      color: var(--neon-g);
+      text-shadow: 0 0 8px var(--neon-g);
+      letter-spacing: 0.05em;
+    }
+
+    .modal-frame-wrap {
+      width: 100%;
+      max-width: 900px;
+      aspect-ratio: 16/9;
+      border: 2px solid var(--neon-g);
+      box-shadow: 0 0 30px rgba(0,255,136,0.15), 0 0 60px rgba(0,255,136,0.05);
+      position: relative;
+      background: #000;
+    }
+
+    #game-frame {
+      width: 100%;
+      height: 100%;
+      border: none;
+      display: block;
+    }
+
+    .modal-footer {
+      width: 100%;
+      max-width: 900px;
+      display: flex;
+      justify-content: flex-end;
+      margin-top: 0.75rem;
+    }
+
+    #close-btn {
+      font-family: var(--font-px);
+      font-size: 0.5rem;
+      padding: 10px 20px;
+      background: transparent;
+      border: 1px solid var(--neon-r);
+      color: var(--neon-r);
+      cursor: pointer;
+      text-shadow: 0 0 6px var(--neon-r);
+      transition: all 0.12s;
+    }
+
+    #close-btn:hover {
+      background: var(--neon-r);
+      color: var(--bg);
+      text-shadow: none;
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 1.5rem;
+      text-align: center;
+      font-size: 11px;
+      color: var(--muted);
+      margin-top: 3rem;
+      font-family: var(--font-px);
+      font-size: 0.4rem;
+      line-height: 2;
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 600px) {
+      .logo { font-size: 0.5rem; }
+      .coin-badge { display: none; }
+      #grid { grid-template-columns: 1fr 1fr; gap: 0.75rem; }
+      .thumb { height: 100px; font-size: 1.8rem; }
+    }
+
+    @media (max-width: 400px) {
+      #grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <div class="logo">UNBLOCK<span>MATH</span><br>// ARCADE</div>
+    <div class="search-wrap">
+      <input type="text" id="search" placeholder="SEARCH GAMES..." aria-label="Search games" autocomplete="off">
+    </div>
+    <div class="coin-badge">INSERT COIN</div>
+  </div>
+</header>
+
+<main>
+  <nav class="cat-bar" aria-label="Game categories">
+    <button class="cat-btn active" data-cat="all">ALL</button>
+    <button class="cat-btn" data-cat="action">ACTION</button>
+    <button class="cat-btn" data-cat="puzzle">PUZZLE</button>
+    <button class="cat-btn" data-cat="strategy">STRATEGY</button>
+    <button class="cat-btn" data-cat="classic">CLASSIC</button>
+  </nav>
+
+  <section id="grid" aria-label="Game library">
+    <!-- injected by JS -->
+  </section>
+
+  <div id="no-results" aria-live="polite">
+    NO GAMES FOUND<br>
+    <span style="color: var(--neon-r); font-size: 0.4rem;">// TRY A DIFFERENT SEARCH</span>
+  </div>
+</main>
+
+<div id="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+  <div class="modal-header">
+    <div id="modal-title">NOW PLAYING</div>
+    <div style="font-family:var(--font-px);font-size:0.4rem;color:var(--muted);">ESC TO EXIT</div>
+  </div>
+  <div class="modal-frame-wrap">
+    <iframe id="game-frame" src="" title="Game" allowfullscreen></iframe>
+  </div>
+  <div class="modal-footer">
+    <button id="close-btn">✕ QUIT GAME</button>
+  </div>
+</div>
+
+<footer>
+  UNBLOCKMATH ARCADE &nbsp;·&nbsp; SELF-HOSTED &nbsp;·&nbsp; © 2025
+</footer>
+
+<script>
+  /**
+   * GAME DATA
+   * Add your self-hosted games here.
+   * cat: "action" | "puzzle" | "strategy" | "classic"
+   * url: path to your self-hosted game (e.g. "/games/snake/index.html")
+   * icon: any emoji or short string for the thumbnail
+   */
+  const GAMES = [ { id: 1, title: "2048", cat: "classic", icon: "🎮", desc: "its 2048.", url: "https://aidantangtps.github.io/UnblockedStudy/Games/2048/index.html" },
+                ];
+
+  const grid     = document.getElementById('grid');
+  const noRes    = document.getElementById('no-results');
+  const search   = document.getElementById('search');
+  const modal    = document.getElementById('modal');
+  const frame    = document.getElementById('game-frame');
+  const closeBtn = document.getElementById('close-btn');
+  const modalTitle = document.getElementById('modal-title');
+
+  let activeCat = 'all';
+
+  function render() {
+    const q = search.value.toLowerCase().trim();
+    grid.innerHTML = '';
+
+    const filtered = GAMES.filter(g => {
+      const catMatch = activeCat === 'all' || g.cat === activeCat;
+      const searchMatch = !q || g.title.toLowerCase().includes(q) || g.cat.includes(q);
+      return catMatch && searchMatch;
+    });
+
+    noRes.style.display = filtered.length === 0 ? 'block' : 'none';
+
+    filtered.forEach((g, i) => {
+      const card = document.createElement('article');
+      card.className = 'card';
+      card.setAttribute('data-cat', g.cat);
+      card.style.animationDelay = `${i * 0.04}s`;
+      card.innerHTML = `
+        <div class="thumb">${g.icon}</div>
+        <div class="card-body">
+          <div class="card-top">
+            <div class="card-title">${g.title}</div>
+            <div class="cat-tag">${g.cat.toUpperCase()}</div>
+          </div>
+          <div class="card-desc">${g.desc}</div>
+          <button class="play-btn" aria-label="Play ${g.title}">▶ PLAY NOW</button>
+        </div>
+      `;
+      card.querySelector('.play-btn').addEventListener('click', () => openGame(g));
+      grid.appendChild(card);
+    });
+  }
+
+  function openGame(g) {
+    frame.src = g.url;
+    modalTitle.textContent = '// ' + g.title.toUpperCase();
+    modal.classList.add('active');
+    document.body.style.overflow = 'hidden';
+    closeBtn.focus();
+  }
+
+  function closeGame() {
+    modal.classList.remove('active');
+    frame.src = '';
+    document.body.style.overflow = '';
+    search.focus();
+  }
+
+  // Category buttons
+  document.querySelectorAll('.cat-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      activeCat = btn.dataset.cat;
+      render();
+    });
+  });
+
+  search.addEventListener('input', render);
+  closeBtn.addEventListener('click', closeGame);
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape' && modal.classList.contains('active')) closeGame();
+  });
+
+  render();
+</script>
+</body>
+</html>
