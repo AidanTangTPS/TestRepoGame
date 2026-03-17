@@ -52,6 +52,16 @@
             font-size: 20px;
             font-weight: bold;
             flex-shrink: 0;
+            overflow: hidden;
+        }
+
+        /* ✅ NEW: Make images fit perfectly in circular avatars */
+        .avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 50%;
+            display: block;
         }
 
         .bot-info h1 {
@@ -273,7 +283,9 @@
 <div class="container">
     <!-- Header -->
     <div class="header">
-        <div class="avatar">🤖</div>
+        <div class="avatar">
+            <img src="https://api.dicebear.com/7.x/bottts/svg?seed=Alsen" alt="Alsen bot">
+        </div>
         <div class="bot-info">
             <h1>Alsen</h1>
             <div class="status" id="statusText">listening</div>
@@ -285,7 +297,9 @@
 
     <!-- Typing indicator -->
     <div class="typing" id="typingIndicator">
-        <div class="avatar" style="width:28px;height:28px;font-size:14px;">🤖</div>
+        <div class="avatar" style="width:28px;height:28px;font-size:14px;">
+            <img src="https://api.dicebear.com/7.x/bottts/svg?seed=Alsen" alt="Alsen bot">
+        </div>
         <div class="typing-dots"><span></span><span></span><span></span></div>
     </div>
 
@@ -314,8 +328,10 @@
 <script>
     // ═══════════════════════════════════════════════════
     // 🤖 ALSEN - QUIRKY PERSONALITY CHATBOT
-    // Every response includes: caw caw / alarm clock / expired yogurt / calculator screenshot / "I'm gonna end it"
     // ═══════════════════════════════════════════════════
+
+    // ✅ Pro tip: Store avatar URL in one place for easy updates
+    const BOT_AVATAR_URL = 'https://api.dicebear.com/7.x/bottts/svg?seed=Alsen';
 
     const chatArea = document.getElementById('chatArea');
     const userInput = document.getElementById('userInput');
@@ -324,7 +340,6 @@
     const interactionCountEl = document.getElementById('interactionCount');
     const personalityHint = document.getElementById('personalityHint');
 
-    // ─── PERSONALITY PHRASES (core identity) ───
     const personalityPhrases = [
         "caw caw",
         "alarm clock",
@@ -333,7 +348,6 @@
         "I'm gonna end it"
     ];
 
-    // ─── STATE ───
     let state = {
         interactionCount: 0,
         mood: "curious",
@@ -343,14 +357,12 @@
         phraseIndex: 0
     };
 
-    // ─── HELPER: Get next personality phrase (rotates) ───
     function getNextPersonalityPhrase() {
         const phrase = personalityPhrases[state.phraseIndex];
         state.phraseIndex = (state.phraseIndex + 1) % personalityPhrases.length;
         return phrase;
     }
 
-    // ─── HELPER: Append personality signature naturally ───
     function withPersonality(text, options = {}) {
         const phrase = options.forcePhrase || getNextPersonalityPhrase();
         const styles = [
@@ -364,7 +376,6 @@
         return styles[Math.floor(Math.random() * styles.length)];
     }
 
-    // ─── INTENT PATTERNS (with personality baked in) ───
     const intentPatterns = {
         greeting: {
             keywords: ['hi', 'hello', 'hey', 'greetings', 'howdy', 'yo', 'sup', 'good morning', 'good afternoon', 'good evening'],
@@ -471,7 +482,6 @@
         }
     };
 
-    // ─── SENTIMENT DETECTION ───
     function detectSentiment(text) {
         const lower = text.toLowerCase();
         const positiveWords = ['happy', 'great', 'awesome', 'love', 'good', 'nice', 'cool', 'amazing', 'wonderful', 'fantastic', 'excellent', 'best'];
@@ -486,7 +496,6 @@
         return 'neutral';
     }
 
-    // ─── FALLBACK LINES (personality-forward) ───
     const fallbackLines = [
         "caw caw... I didn't quite catch that. Could you rephrase? 🐦",
         "alarm clock ringing in my circuits... try simpler words? ⏰",
@@ -495,23 +504,30 @@
         "I'm gonna end it... this misunderstanding! 😅 What did you mean?",
         "caw caw + alarm clock = me trying to understand. Help me out?",
         "My expired yogurt brain is buffering. Say that another way?",
-        "ALSEN LAI CAW"
+        "CAW CAW ELDEN"
     ];
-
-    // ─── FUNCTIONS ───
 
     function getTime() {
         const now = new Date();
         return now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
     }
 
+    // ✅ FIXED: Corrected addMessage function with proper avatar logic
     function addMessage(text, sender, isGlitch = false) {
         const row = document.createElement('div');
         row.className = `message-row ${sender}`;
 
         const avatar = document.createElement('div');
         avatar.className = 'avatar';
-        avatar.textContent = sender === 'bot' ? '🤖' : '👤';
+        
+        if (sender === 'bot') {
+            const img = document.createElement('img');
+            img.src = BOT_AVATAR_URL;
+            img.alt = 'Alsen bot';
+            avatar.appendChild(img);
+        } else {
+            avatar.textContent = '👤';
+        }
 
         const bubble = document.createElement('div');
         bubble.className = `bubble ${isGlitch ? 'glitch' : ''}`;
@@ -554,11 +570,9 @@
             state.mood = state.moods[Math.floor(Math.random() * state.moods.length)];
             statusText.textContent = `${state.mood} 🐦`;
         }
-        // Rotate personality hint
         personalityHint.textContent = personalityPhrases.join(' ');
     }
 
-    // ─── INTENT DETECTION ENGINE ───
     function detectIntent(input) {
         const lower = input.toLowerCase().trim();
         
@@ -587,7 +601,6 @@
         if (detected) {
             const { intent, config } = detected;
             
-            // Handle question intent specially (has preambles + answers)
             if (intent === 'question') {
                 const preamble = config.preambles[Math.floor(Math.random() * config.preambles.length)];
                 const answer = config.genericAnswers[Math.floor(Math.random() * config.genericAnswers.length)];
@@ -595,21 +608,17 @@
                 return { valid: true, text: withPersonality(full), glitch: false };
             }
             
-            // Standard intent response
             let response = config.responses[Math.floor(Math.random() * config.responses.length)];
             
-            // Add follow-ups for jokes
             if (intent === 'joke' && Math.random() > 0.5) {
                 const followup = config.followups[Math.floor(Math.random() * config.followups.length)];
                 response += `\n\n${followup}`;
             }
             
-            // Personalize mood
             if (intent === 'mood') {
                 response = response.replace('${state.mood}', state.mood);
             }
             
-            // Name handling
             if (intent === 'name' && !state.userName) {
                 response += `\n\nWhat should I call you? 😊 (caw caw)`;
             }
@@ -618,7 +627,6 @@
             return { valid: true, text: withPersonality(response), glitch: false };
         }
         
-        // Name capture
         if (input.toLowerCase().match(/\bmy name is (\w+)/i)) {
             const name = input.match(/\bmy name is (\w+)/i)[1];
             state.userName = name;
@@ -629,7 +637,6 @@
             };
         }
         
-        // Name confirmation
         if (state.lastTopic === 'name' && input.trim().length < 20 && !/[?]/.test(input)) {
             state.userName = input.trim();
             return { 
@@ -639,7 +646,6 @@
             };
         }
         
-        // Fallback with personality + glitch style
         const fallback = fallbackLines[Math.floor(Math.random() * fallbackLines.length)];
         return { valid: false, text: fallback, glitch: true };
     }
@@ -676,12 +682,10 @@
         handleInput();
     }
 
-    // Event listeners
     userInput.addEventListener('keypress', (e) => {
         if (e.key === 'Enter') handleInput();
     });
 
-    // Welcome sequence
     window.onload = () => {
         setTimeout(() => {
             addMessage(withPersonality("Hey. I'm Alsen. 👋"), 'bot');
