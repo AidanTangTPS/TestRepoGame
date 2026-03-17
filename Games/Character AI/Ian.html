@@ -191,7 +191,6 @@
 <div class="container">
     <div class="header">
         <div class="avatar">
-            <!-- ✅ Filename encoded for spaces/parentheses -->
             <img src="Screenshot_20260104_185315_Photos%20%283%29.jpg" alt="Janko bot">
         </div>
         <div class="bot-info">
@@ -385,7 +384,7 @@
     }
 
     const fallbackLines = [
-        "caw caw... I didn't quite catch that. Could you rephrase? 🐦",
+        "Hey! Janko here!",
         "alarm clock ringing in my circuits... try simpler words? ⏰",
         "expired yogurt confusion... what did you mean? 🥛",
         "calculator screenshot error: input not parsed. Try again? 🧮",
@@ -529,7 +528,7 @@
 
     window.onload = () => {
         setTimeout(() => addMessage(withPersonality("Hey. I'm Janko. 👋"), 'bot'), 300);
-        setTimeout(() => addMessage(withPersonality("I listen naturally + always include: caw caw / alarm clock / expired yogurt / calculator screenshot / 'I'm gonna end it'.\n\nTry: 'How are you?' or 'Tell me a joke' or just... talk. 🐦⏰🥛"), 'bot'), 1200);
+        setTimeout(() => addMessage(withPersonality("Im a jankbot"), 'bot'), 1200);
     };
 </script>
 
