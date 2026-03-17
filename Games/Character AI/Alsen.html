@@ -31,7 +31,6 @@
             overflow: hidden;
         }
 
-        /* ─── HEADER ─── */
         .header {
             padding: 12px 16px;
             background: #075E54;
@@ -55,7 +54,6 @@
             overflow: hidden;
         }
 
-        /* ✅ NEW: Make images fit perfectly in circular avatars */
         .avatar img {
             width: 100%;
             height: 100%;
@@ -64,18 +62,9 @@
             display: block;
         }
 
-        .bot-info h1 {
-            font-size: 17px;
-            font-weight: 500;
-            margin-bottom: 2px;
-        }
+        .bot-info h1 { font-size: 17px; font-weight: 500; margin-bottom: 2px; }
+        .bot-info .status { font-size: 13px; opacity: 0.9; }
 
-        .bot-info .status {
-            font-size: 13px;
-            opacity: 0.9;
-        }
-
-        /* ─── CHAT AREA ─── */
         .chat-area {
             flex: 1;
             padding: 16px;
@@ -87,27 +76,10 @@
             background-image: url("image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23d4c8b5' fill-opacity='0.3'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zm0-30V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
         }
 
-        .message-row {
-            display: flex;
-            align-items: flex-end;
-            gap: 8px;
-            max-width: 85%;
-        }
-
-        .message-row.user {
-            margin-left: auto;
-            flex-direction: row-reverse;
-        }
-
-        .message-row.bot .avatar {
-            background: #25D366;
-            color: #fff;
-        }
-
-        .message-row.user .avatar {
-            background: #075E54;
-            color: #fff;
-        }
+        .message-row { display: flex; align-items: flex-end; gap: 8px; max-width: 85%; }
+        .message-row.user { margin-left: auto; flex-direction: row-reverse; }
+        .message-row.bot .avatar { background: #25D366; color: #fff; }
+        .message-row.user .avatar { background: #075E54; color: #fff; }
 
         .bubble {
             padding: 8px 10px;
@@ -119,7 +91,6 @@
             word-wrap: break-word;
         }
 
-        /* Bot bubble - left, white */
         .message-row.bot .bubble {
             background: #fff;
             color: #111B21;
@@ -127,7 +98,6 @@
             box-shadow: 0 1px 2px rgba(0,0,0,0.1);
         }
 
-        /* User bubble - right, green */
         .message-row.user .bubble {
             background: #DCF8C6;
             color: #111B21;
@@ -135,7 +105,6 @@
             box-shadow: 0 1px 2px rgba(0,0,0,0.1);
         }
 
-        /* Glitch/Error bubble - for rule breaks */
         .bubble.glitch {
             background: #FFE5E5;
             color: #B00020;
@@ -143,20 +112,9 @@
             font-style: italic;
         }
 
-        /* Timestamps */
-        .timestamp {
-            font-size: 11px;
-            color: #667781;
-            margin-top: 4px;
-            text-align: right;
-            opacity: 0.8;
-        }
+        .timestamp { font-size: 11px; color: #667781; margin-top: 4px; text-align: right; opacity: 0.8; }
+        .message-row.user .timestamp { color: rgba(255,255,255,0.8); }
 
-        .message-row.user .timestamp {
-            color: rgba(255,255,255,0.8);
-        }
-
-        /* Typing indicator */
         .typing {
             display: none;
             align-items: center;
@@ -167,18 +125,12 @@
             margin-left: 56px;
             margin-bottom: 8px;
         }
-
         .typing.active { display: flex; }
 
         .typing-dots span {
-            width: 6px;
-            height: 6px;
-            background: #667781;
-            border-radius: 50%;
-            display: inline-block;
-            animation: bounce 1.4s infinite ease-in-out both;
+            width: 6px; height: 6px; background: #667781; border-radius: 50%;
+            display: inline-block; animation: bounce 1.4s infinite ease-in-out both;
         }
-
         .typing-dots span:nth-child(2) { animation-delay: 0.2s; }
         .typing-dots span:nth-child(3) { animation-delay: 0.4s; }
 
@@ -187,7 +139,6 @@
             40% { transform: scale(1.2); opacity: 1; }
         }
 
-        /* ─── INPUT AREA ─── */
         .input-area {
             padding: 10px 12px;
             background: #f0f0f0;
@@ -195,82 +146,38 @@
             gap: 8px;
             align-items: center;
         }
-
         .input-area input {
-            flex: 1;
-            background: #fff;
-            border: 1px solid #ddd;
-            border-radius: 24px;
-            padding: 10px 16px;
-            font-size: 15px;
-            outline: none;
+            flex: 1; background: #fff; border: 1px solid #ddd; border-radius: 24px;
+            padding: 10px 16px; font-size: 15px; outline: none;
         }
-
-        .input-area input:focus {
-            border-color: #25D366;
-        }
-
+        .input-area input:focus { border-color: #25D366; }
         .input-area button {
-            background: #25D366;
-            color: #fff;
-            border: none;
-            border-radius: 50%;
-            width: 44px;
-            height: 44px;
-            font-size: 18px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            background: #25D366; color: #fff; border: none; border-radius: 50%;
+            width: 44px; height: 44px; font-size: 18px; cursor: pointer;
+            display: flex; align-items: center; justify-content: center;
             transition: background 0.2s;
         }
+        .input-area button:hover { background: #128C7E; }
 
-        .input-area button:hover {
-            background: #128C7E;
-        }
-
-        /* ─── RULES PANEL ─── */
         .rules-panel {
-            padding: 8px 16px;
-            background: #f8f8f8;
-            border-top: 1px solid #eee;
-            font-size: 12px;
-            color: #666;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 6px;
+            padding: 8px 16px; background: #f8f8f8; border-top: 1px solid #eee;
+            font-size: 12px; color: #666; display: flex; justify-content: space-between;
+            align-items: center; flex-wrap: wrap; gap: 6px;
         }
-
         .rule-tag {
-            background: #e9edef;
-            padding: 4px 10px;
-            border-radius: 12px;
-            cursor: pointer;
-            transition: background 0.2s;
+            background: #e9edef; padding: 4px 10px; border-radius: 12px;
+            cursor: pointer; transition: background 0.2s;
         }
-
-        .rule-tag:hover {
-            background: #d1f0d9;
-        }
-
-        /* Personality tag */
+        .rule-tag:hover { background: #d1f0d9; }
         .personality-tag {
-            background: #fff3cd;
-            color: #856404;
-            padding: 4px 10px;
-            border-radius: 12px;
-            font-size: 11px;
-            font-weight: 500;
+            background: #fff3cd; color: #856404; padding: 4px 10px;
+            border-radius: 12px; font-size: 11px; font-weight: 500;
         }
 
-        /* Scrollbar */
         .chat-area::-webkit-scrollbar { width: 5px; }
         .chat-area::-webkit-scrollbar-thumb { background: #ccc; border-radius: 3px; }
         .chat-area::-webkit-scrollbar-track { background: transparent; }
 
-        /* Mobile */
         @media (max-width: 500px) {
             body { padding: 0; }
             .container { height: 100vh; border-radius: 0; }
@@ -281,10 +188,10 @@
 <body>
 
 <div class="container">
-    <!-- Header -->
     <div class="header">
         <div class="avatar">
-            <img src="Screenshot_20260104_185315_Photos (3).jpg" alt="Alsen bot">
+            <!-- ✅ Filename encoded for spaces/parentheses -->
+            <img src="Screenshot_20260104_185315_Photos%20%283%29.jpg" alt="Alsen bot">
         </div>
         <div class="bot-info">
             <h1>Alsen</h1>
@@ -292,24 +199,20 @@
         </div>
     </div>
 
-    <!-- Chat -->
     <div class="chat-area" id="chatArea"></div>
 
-    <!-- Typing indicator -->
     <div class="typing" id="typingIndicator">
         <div class="avatar" style="width:28px;height:28px;font-size:14px;">
-            <img src="Screenshot_20260104_185315_Photos (3).jpg" alt="Alsen bot">
+            <img src="Screenshot_20260104_185315_Photos%20%283%29.jpg" alt="Alsen bot">
         </div>
         <div class="typing-dots"><span></span><span></span><span></span></div>
     </div>
 
-    <!-- Input -->
     <div class="input-area">
         <input type="text" id="userInput" placeholder="Talk to me naturally..." autocomplete="off">
         <button onclick="handleInput()">➤</button>
     </div>
 
-    <!-- Quick commands + Personality reminder -->
     <div class="rules-panel">
         <div style="display:flex;gap:6px;flex-wrap:wrap;">
             <span class="rule-tag" onclick="quickCmd('hello')">hello</span>
@@ -326,12 +229,7 @@
 </div>
 
 <script>
-    // ═══════════════════════════════════════════════════
-    // 🤖 ALSEN - QUIRKY PERSONALITY CHATBOT
-    // ═══════════════════════════════════════════════════
-
-    // ✅ Pro tip: Store avatar URL in one place for easy updates
-    const BOT_AVATAR_URL = 'Screenshot_20260104_185315_Photos (3).jpg';
+    const BOT_AVATAR_URL = 'Screenshot_20260104_185315_Photos%20%283%29.jpg';
 
     const chatArea = document.getElementById('chatArea');
     const userInput = document.getElementById('userInput');
@@ -340,13 +238,7 @@
     const interactionCountEl = document.getElementById('interactionCount');
     const personalityHint = document.getElementById('personalityHint');
 
-    const personalityPhrases = [
-        "caw caw",
-        "alarm clock",
-        "expired yogurt",
-        "calculator screenshot",
-        "I'm gonna end it"
-    ];
+    const personalityPhrases = ["caw caw", "alarm clock", "expired yogurt", "calculator screenshot", "I'm gonna end it"];
 
     let state = {
         interactionCount: 0,
@@ -366,11 +258,8 @@
     function withPersonality(text, options = {}) {
         const phrase = options.forcePhrase || getNextPersonalityPhrase();
         const styles = [
-            ` ${text} — ${phrase}.`,
-            `${text} (${phrase})`,
-            `${text} ...${phrase}...`,
-            `${phrase} — ${text}`,
-            `${text} ✨ ${phrase}`,
+            ` ${text} — ${phrase}.`, `${text} (${phrase})`, `${text} ...${phrase}...`,
+            `${phrase} — ${text}`, `${text} ✨ ${phrase}`,
             `${text}\n\n<small style="opacity:0.7">[${phrase}]</small>`
         ];
         return styles[Math.floor(Math.random() * styles.length)];
@@ -486,11 +375,9 @@
         const lower = text.toLowerCase();
         const positiveWords = ['happy', 'great', 'awesome', 'love', 'good', 'nice', 'cool', 'amazing', 'wonderful', 'fantastic', 'excellent', 'best'];
         const negativeWords = ['sad', 'bad', 'hate', 'angry', 'upset', 'frustrated', 'tired', 'stressed', 'terrible', 'awful', 'worst'];
-        
         let score = 0;
         positiveWords.forEach(word => { if (lower.includes(word)) score++; });
         negativeWords.forEach(word => { if (lower.includes(word)) score--; });
-        
         if (score > 0) return 'positive';
         if (score < 0) return 'negative';
         return 'neutral';
@@ -512,7 +399,6 @@
         return now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
     }
 
-    // ✅ FIXED: Corrected addMessage function with proper avatar logic
     function addMessage(text, sender, isGlitch = false) {
         const row = document.createElement('div');
         row.className = `message-row ${sender}`;
@@ -556,14 +442,8 @@
         chatArea.scrollTop = chatArea.scrollHeight;
     }
 
-    function showTyping() {
-        typingIndicator.classList.add('active');
-        chatArea.scrollTop = chatArea.scrollHeight;
-    }
-
-    function hideTyping() {
-        typingIndicator.classList.remove('active');
-    }
+    function showTyping() { typingIndicator.classList.add('active'); chatArea.scrollTop = chatArea.scrollHeight; }
+    function hideTyping() { typingIndicator.classList.remove('active'); }
 
     function updateMood() {
         if (state.interactionCount % 5 === 0) {
@@ -575,98 +455,64 @@
 
     function detectIntent(input) {
         const lower = input.toLowerCase().trim();
-        
         for (const [intent, config] of Object.entries(intentPatterns)) {
             if (config.keywords.some(keyword => lower.includes(keyword))) {
                 return { intent, config };
             }
         }
-        
         if (/[?]/.test(input) || intentPatterns.question.keywords.some(k => lower.includes(k))) {
             return { intent: 'question', config: intentPatterns.question };
         }
-        
         const sentiment = detectSentiment(input);
         if (sentiment === 'negative') return { intent: 'negative', config: intentPatterns.negative };
         if (sentiment === 'positive' && !lower.includes('thank')) {
             return { intent: 'compliment', config: intentPatterns.compliment };
         }
-        
         return null;
     }
 
     function generateResponse(input) {
         const detected = detectIntent(input);
-        
         if (detected) {
             const { intent, config } = detected;
-            
             if (intent === 'question') {
                 const preamble = config.preambles[Math.floor(Math.random() * config.preambles.length)];
                 const answer = config.genericAnswers[Math.floor(Math.random() * config.genericAnswers.length)];
-                const full = `${preamble}\n\n${answer}`;
-                return { valid: true, text: withPersonality(full), glitch: false };
+                return { valid: true, text: withPersonality(`${preamble}\n\n${answer}`), glitch: false };
             }
-            
             let response = config.responses[Math.floor(Math.random() * config.responses.length)];
-            
             if (intent === 'joke' && Math.random() > 0.5) {
-                const followup = config.followups[Math.floor(Math.random() * config.followups.length)];
-                response += `\n\n${followup}`;
+                response += `\n\n${config.followups[Math.floor(Math.random() * config.followups.length)]}`;
             }
-            
-            if (intent === 'mood') {
-                response = response.replace('${state.mood}', state.mood);
-            }
-            
-            if (intent === 'name' && !state.userName) {
-                response += `\n\nWhat should I call you? 😊 (caw caw)`;
-            }
-            
+            if (intent === 'mood') response = response.replace('${state.mood}', state.mood);
+            if (intent === 'name' && !state.userName) response += `\n\nWhat should I call you? 😊 (caw caw)`;
             state.lastTopic = intent;
             return { valid: true, text: withPersonality(response), glitch: false };
         }
-        
         if (input.toLowerCase().match(/\bmy name is (\w+)/i)) {
-            const name = input.match(/\bmy name is (\w+)/i)[1];
-            state.userName = name;
-            return { 
-                valid: true, 
-                text: withPersonality(`Nice to meet you, ${name}! 🎉 I'll remember that. What would you like to chat about?`), 
-                glitch: false 
-            };
+            state.userName = input.match(/\bmy name is (\w+)/i)[1];
+            return { valid: true, text: withPersonality(`Nice to meet you, ${state.userName}! 🎉 I'll remember that. What would you like to chat about?`), glitch: false };
         }
-        
         if (state.lastTopic === 'name' && input.trim().length < 20 && !/[?]/.test(input)) {
             state.userName = input.trim();
-            return { 
-                valid: true, 
-                text: withPersonality(`Got it, ${state.userName}! 👍 So, what's on your mind today?`), 
-                glitch: false 
-            };
+            return { valid: true, text: withPersonality(`Got it, ${state.userName}! 👍 So, what's on your mind today?`), glitch: false };
         }
-        
-        const fallback = fallbackLines[Math.floor(Math.random() * fallbackLines.length)];
-        return { valid: false, text: fallback, glitch: true };
+        return { valid: false, text: fallbackLines[Math.floor(Math.random() * fallbackLines.length)], glitch: true };
     }
 
     function handleInput() {
         const text = userInput.value.trim();
         if (!text) return;
-
         addMessage(text, 'user');
         userInput.value = '';
         state.interactionCount++;
         interactionCountEl.textContent = `${state.interactionCount} chats`;
         updateMood();
-
         showTyping();
-
         setTimeout(() => {
             hideTyping();
             const result = generateResponse(text);
             addMessage(result.text, 'bot', result.glitch);
-
             if (text.toLowerCase().match(/\b(bye|goodbye|exit|quit)\b/i)) {
                 setTimeout(() => {
                     statusText.textContent = 'offline 🐦';
@@ -677,22 +523,12 @@
         }, 500 + Math.random() * 600);
     }
 
-    function quickCmd(cmd) {
-        userInput.value = cmd;
-        handleInput();
-    }
-
-    userInput.addEventListener('keypress', (e) => {
-        if (e.key === 'Enter') handleInput();
-    });
+    function quickCmd(cmd) { userInput.value = cmd; handleInput(); }
+    userInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') handleInput(); });
 
     window.onload = () => {
-        setTimeout(() => {
-            addMessage(withPersonality("Hey. I'm Alsen. 👋"), 'bot');
-        }, 300);
-        setTimeout(() => {
-            addMessage(withPersonality("I listen naturally + always include: caw caw / alarm clock / expired yogurt / calculator screenshot / 'I'm gonna end it'.\n\nTry: 'How are you?' or 'Tell me a joke' or just... talk. 🐦⏰🥛"), 'bot');
-        }, 1200);
+        setTimeout(() => addMessage(withPersonality("Hey. I'm Alsen. 👋"), 'bot'), 300);
+        setTimeout(() => addMessage(withPersonality("I listen naturally + always include: caw caw / alarm clock / expired yogurt / calculator screenshot / 'I'm gonna end it'.\n\nTry: 'How are you?' or 'Tell me a joke' or just... talk. 🐦⏰🥛"), 'bot'), 1200);
     };
 </script>
 
