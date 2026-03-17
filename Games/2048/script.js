@@ -163,13 +163,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
   //assign functions to keyCodes
   function control(e) {
-    if (e.keyCode === 37) {
+    if (e.keyCode === 65) {
       keyLeft();
-    } else if (e.keyCode === 38) {
+    } else if (e.keyCode === 87) {
       keyUp();
-    } else if (e.keyCode === 39) {
+    } else if (e.keyCode === 68) {
       keyRight();
-    } else if (e.keyCode === 40) {
+    } else if (e.keyCode === 83) {
       keyDown();
     }
   }
