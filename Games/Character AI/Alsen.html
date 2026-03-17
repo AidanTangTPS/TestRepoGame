@@ -73,7 +73,7 @@
             flex-direction: column;
             gap: 8px;
             background: #ECE5DD;
-            background-image: url("image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23d4c8b5' fill-opacity='0.3'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zm0-30V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+            background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23d4c8b5' fill-opacity='0.3'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zm0-30V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
         }
 
         .message-row { display: flex; align-items: flex-end; gap: 8px; max-width: 85%; }
@@ -238,7 +238,8 @@
     const interactionCountEl = document.getElementById('interactionCount');
     const personalityHint = document.getElementById('personalityHint');
 
-    const personalityPhrases = ["caw caw", "alarm clock", "expired yogurt", "calculator screenshot", "I'm gonna end it"];
+    // ✅ UPDATED: Added "revengeful" to the rotation
+    const personalityPhrases = ["caw caw", "alarm clock", "expired yogurt", "calculator screenshot", "I'm gonna end it", "revengeful"];
 
     let state = {
         interactionCount: 0,
@@ -527,8 +528,8 @@
     userInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') handleInput(); });
 
     window.onload = () => {
-        setTimeout(() => addMessage(withPersonality("Hey. I'm Alsen. 👋"), 'bot'), 300);
-        setTimeout(() => addMessage(withPersonality("I listen naturally + always include: caw caw / alarm clock / expired yogurt / calculator screenshot / 'I'm gonna end it'.\n\nTry: 'How are you?' or 'Tell me a joke' or just... talk. 🐦⏰🥛"), 'bot'), 1200);
+        setTimeout(() => addMessage(withPersonality("Hey. I'm Alsen. "), 'bot'), 300);
+        setTimeout(() => addMessage(withPersonality("I listen naturally + always include: caw caw / alarm clock / expired yogurt / calculator screenshot / 'I'm gonna end it' / revengeful.\n\nTry: 'How are you?' or 'Tell me a joke' or just... talk. 🐦⏰🥛"), 'bot'), 1200);
     };
 </script>
 
