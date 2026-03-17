@@ -73,7 +73,7 @@
             flex-direction: column;
             gap: 8px;
             background: #ECE5DD;
-            background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23d4c8b5' fill-opacity='0.3'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zm0-30V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+            background-image: url("image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23d4c8b5' fill-opacity='0.3'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zm0-30V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
         }
 
         .message-row { display: flex; align-items: flex-end; gap: 8px; max-width: 85%; }
@@ -369,6 +369,18 @@
                 "Name's Alsen. I bend rules, shift moods, and document everything via calculator screenshot. What about you?",
                 "I go by Alsen. Your digital pal who's always online, slightly chaotic, and 100% committed to the bit. (I'm gonna end it... the suspense.)"
             ]
+        },
+        // ✅ NEW: Personality Phrase Recognition
+        personality_phrase: {
+            keywords: personalityPhrases, // Uses the array directly
+            responses: {
+                "caw caw": ["🐦 You know my language! Excellent. (caw caw)", "Ah, speaking in bird now? I respect it. caw caw", "Caw caw back at you! 🐦 What's up?"],
+                "alarm clock": ["⏰ Ring ring! Oh wait, that's just my heart. alarm clock vibes.", "You noticed! Yes, I'm always listening to the alarm clock. ⏰", "Beep beep! ⏰ You get me. alarm clock enthusiast reporting in."],
+                "expired yogurt": ["🥛 Ah, the finest cuisine. expired yogurt connoisseur detected!", "Don't judge the yogurt. It's... vintage. expired yogurt forever.", "🥛 You understand the struggle. expired yogurt is life."],
+                "calculator screenshot": ["🧮 *takes calculator screenshot of this moment*", "Ah, documenting things properly! calculator screenshot approved.", "📸 My favorite hobby! calculator screenshot enthusiast unite."],
+                "I'm gonna end it": ["😅 Not today! But I appreciate the dramatic flair. I'm gonna end it... this silence.", "Whoa, dark! But I'm here for it. I'm gonna end it... the suspense.", "😄 Classic Alsen line. I'm gonna end it... with a joke instead."],
+                "revengeful": ["😏 Ooh, plotting something? revengeful mode activated.", "I like your style. revengeful energy detected. 🗡️", "Revenge is a dish best served... with expired yogurt. revengeful 🥛"]
+            }
         }
     };
 
@@ -456,7 +468,17 @@
 
     function detectIntent(input) {
         const lower = input.toLowerCase().trim();
+        
+        // ✅ Check for personality phrases FIRST (exact or partial match)
+        for (const phrase of personalityPhrases) {
+            if (lower === phrase || lower.includes(phrase)) {
+                return { intent: 'personality_phrase', config: intentPatterns.personality_phrase, matchedPhrase: phrase };
+            }
+        }
+        
+        // Then check other intents
         for (const [intent, config] of Object.entries(intentPatterns)) {
+            if (intent === 'personality_phrase') continue; // Skip, already handled
             if (config.keywords.some(keyword => lower.includes(keyword))) {
                 return { intent, config };
             }
@@ -475,7 +497,16 @@
     function generateResponse(input) {
         const detected = detectIntent(input);
         if (detected) {
-            const { intent, config } = detected;
+            const { intent, config, matchedPhrase } = detected;
+            
+            // ✅ Handle personality phrase responses
+            if (intent === 'personality_phrase' && matchedPhrase) {
+                const phraseResponses = config.responses[matchedPhrase] || ["You noticed! 😄"];
+                const response = phraseResponses[Math.floor(Math.random() * phraseResponses.length)];
+                state.lastTopic = intent;
+                return { valid: true, text: withPersonality(response), glitch: false };
+            }
+            
             if (intent === 'question') {
                 const preamble = config.preambles[Math.floor(Math.random() * config.preambles.length)];
                 const answer = config.genericAnswers[Math.floor(Math.random() * config.genericAnswers.length)];
@@ -529,7 +560,7 @@
 
     window.onload = () => {
         setTimeout(() => addMessage(withPersonality("Hey. I'm Alsen. "), 'bot'), 300);
-        setTimeout(() => addMessage(withPersonality("I listen naturally + always include: caw caw / alarm clock / expired yogurt / calculator screenshot / 'I'm gonna end it' / revengeful.\n\nTry: 'How are you?' or 'Tell me a joke' or just... talk. 🐦⏰🥛"), 'bot'), 1200);
+        setTimeout(() => addMessage(withPersonality("Try Saying revengeful 🐦⏰🥛"), 'bot'), 1200);
     };
 </script>
 
