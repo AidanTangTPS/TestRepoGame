@@ -163,16 +163,23 @@ document.addEventListener("DOMContentLoaded", () => {
 
   //assign functions to keyCodes
   function control(e) {
-    if (e.keyCode === 65) {
-      keyLeft();
-    } else if (e.keyCode === 87) {
-      keyUp();
-    } else if (e.keyCode === 68) {
-      keyRight();
-    } else if (e.keyCode === 83) {
-      keyDown();
-    }
+  const key = e.keyCode;
+  
+  // Prevent scrolling/default behavior for WASD
+  if ([65, 87, 83, 68].includes(key)) {
+    e.preventDefault();
   }
+  
+  if (key === 65) {
+    keyLeft();
+  } else if (key === 87) {
+    keyUp();
+  } else if (key === 68) {
+    keyRight();
+  } else if (key === 83) {
+    keyDown();
+  }
+}
   document.addEventListener("keyup", control);
 
   function keyRight() {
