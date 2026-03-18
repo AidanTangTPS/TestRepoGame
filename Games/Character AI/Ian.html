@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -10,13 +9,14 @@
 
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-            background-color: #ECE5DD;
-            color: #111B21;
+            background-color: #0f0a1a;
+            color: #e6e0ff;
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
             padding: 10px;
+            background-image: radial-gradient(circle at 10% 20%, rgba(65, 38, 128, 0.4) 0%, rgba(18, 12, 42, 0.9) 100%);
         }
 
         .container {
@@ -24,35 +24,52 @@
             max-width: 500px;
             height: 95vh;
             max-height: 800px;
-            background: #fff;
-            border-radius: 12px;
+            background: linear-gradient(145deg, #1a1238, #0f0a24);
+            border-radius: 16px;
             display: flex;
             flex-direction: column;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), 0 0 25px rgba(138, 43, 226, 0.3);
             overflow: hidden;
+            border: 1px solid rgba(138, 43, 226, 0.3);
         }
 
         .header {
-            padding: 12px 16px;
-            background: #075E54;
+            padding: 14px 18px;
+            background: linear-gradient(90deg, #6a11cb 0%, #2575fc 100%);
             color: #fff;
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 14px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .header::after {
+            content: "";
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 70%);
+            transform: rotate(30deg);
         }
 
         .avatar {
-            width: 40px;
-            height: 40px;
+            width: 48px;
+            height: 48px;
             border-radius: 50%;
-            background: #25D366;
+            background: linear-gradient(45deg, #ff00cc, #3333ff);
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 20px;
+            font-size: 22px;
             font-weight: bold;
             flex-shrink: 0;
             overflow: hidden;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 0 15px rgba(138, 43, 226, 0.7);
+            position: relative;
         }
 
         .avatar img {
@@ -61,128 +78,342 @@
             object-fit: cover;
             border-radius: 50%;
             display: block;
+            border: 2px solid transparent;
+            transition: transform 0.3s ease;
+        }
+        
+        .avatar img:hover {
+            transform: scale(1.1);
         }
 
-        .bot-info h1 { font-size: 17px; font-weight: 500; margin-bottom: 2px; }
-        .bot-info .status { font-size: 13px; opacity: 0.9; }
+        .bot-info h1 { 
+            font-size: 22px; 
+            font-weight: 700; 
+            margin-bottom: 3px; 
+            background: linear-gradient(90deg, #ff9a9e, #fad0c4, #a1c4fd);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            letter-spacing: -0.5px;
+        }
+        .bot-info .status { 
+            font-size: 14px; 
+            opacity: 0.95; 
+            font-weight: 500;
+            background: rgba(0, 0, 0, 0.2);
+            padding: 2px 8px;
+            border-radius: 12px;
+            display: inline-block;
+            letter-spacing: 0.5px;
+        }
 
         .chat-area {
             flex: 1;
-            padding: 16px;
+            padding: 18px;
             overflow-y: auto;
             display: flex;
             flex-direction: column;
-            gap: 8px;
-            background: #ECE5DD;
-            background-image: url("image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23d4c8b5' fill-opacity='0.3'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zm0-30V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+            gap: 12px;
+            background: rgba(15, 10, 34, 0.85);
+            background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='rgba(106, 17, 203, 0.08)' fill-opacity='1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zm0-30V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+            position: relative;
+        }
+        
+        .chat-area::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, #6a11cb, #2575fc, #6a11cb);
         }
 
-        .message-row { display: flex; align-items: flex-end; gap: 8px; max-width: 85%; }
-        .message-row.user { margin-left: auto; flex-direction: row-reverse; }
-        .message-row.bot .avatar { background: #25D366; color: #fff; }
-        .message-row.user .avatar { background: #075E54; color: #fff; }
+        .message-row { 
+            display: flex; 
+            align-items: flex-end; 
+            gap: 12px; 
+            max-width: 85%; 
+            animation: fadeIn 0.3s ease-out;
+        }
+        .message-row.user { 
+            margin-left: auto; 
+            flex-direction: row-reverse; 
+        }
+        .message-row.bot .avatar { 
+            background: linear-gradient(45deg, #00c6ff, #0072ff);
+        }
+        .message-row.user .avatar { 
+            background: linear-gradient(45deg, #ff2a6d, #f50057);
+        }
 
         .bubble {
-            padding: 8px 10px;
-            border-radius: 8px;
-            font-size: 14px;
-            line-height: 1.4;
+            padding: 12px 16px;
+            border-radius: 18px;
+            font-size: 16px;
+            line-height: 1.5;
             position: relative;
             max-width: 100%;
             word-wrap: break-word;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+            transition: transform 0.2s ease;
+        }
+        
+        .message-row:hover .bubble {
+            transform: translateY(-2px);
         }
 
         .message-row.bot .bubble {
-            background: #fff;
-            color: #111B21;
-            border-top-left-radius: 0;
-            box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+            background: rgba(30, 20, 60, 0.85);
+            color: #e0d6ff;
+            border-top-left-radius: 6px;
+            border: 1px solid rgba(106, 17, 203, 0.3);
+            backdrop-filter: blur(4px);
         }
 
         .message-row.user .bubble {
-            background: #DCF8C6;
-            color: #111B21;
-            border-top-right-radius: 0;
-            box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+            background: rgba(255, 42, 109, 0.15);
+            color: #ffd6e7;
+            border-top-right-radius: 6px;
+            border: 1px solid rgba(255, 42, 109, 0.3);
+            backdrop-filter: blur(4px);
         }
 
         .bubble.glitch {
-            background: #FFE5E5;
-            color: #B00020;
-            border: 1px dashed #B00020;
+            background: rgba(220, 20, 60, 0.15);
+            color: #ff8c8c;
+            border: 1px dashed rgba(220, 20, 60, 0.6);
             font-style: italic;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .bubble.glitch::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 0, 0, 0.1), transparent);
+            animation: glitch 0.5s infinite;
         }
 
-        .timestamp { font-size: 11px; color: #667781; margin-top: 4px; text-align: right; opacity: 0.8; }
-        .message-row.user .timestamp { color: rgba(255,255,255,0.8); }
+        .timestamp { 
+            font-size: 12px; 
+            color: #a090c0; 
+            margin-top: 6px; 
+            text-align: right; 
+            opacity: 0.85; 
+            font-family: monospace;
+        }
+        .message-row.user .timestamp { 
+            color: rgba(255, 255, 255, 0.7); 
+        }
 
         .typing {
             display: none;
             align-items: center;
-            gap: 6px;
-            padding: 8px 12px;
-            color: #667781;
-            font-size: 13px;
+            gap: 10px;
+            padding: 10px 16px;
+            color: #b0a0e0;
+            font-size: 14px;
             margin-left: 56px;
-            margin-bottom: 8px;
+            margin-bottom: 12px;
+            background: rgba(30, 20, 60, 0.7);
+            border-radius: 20px;
+            max-width: fit-content;
+            border: 1px solid rgba(106, 17, 203, 0.4);
         }
-        .typing.active { display: flex; }
+        .typing.active { 
+            display: flex; 
+            animation: pulse 1.5s infinite;
+        }
 
         .typing-dots span {
-            width: 6px; height: 6px; background: #667781; border-radius: 50%;
-            display: inline-block; animation: bounce 1.4s infinite ease-in-out both;
+            width: 8px; 
+            height: 8px; 
+            background: #8a2be2; 
+            border-radius: 50%;
+            display: inline-block; 
+            animation: bounce 1.4s infinite ease-in-out both;
         }
         .typing-dots span:nth-child(2) { animation-delay: 0.2s; }
         .typing-dots span:nth-child(3) { animation-delay: 0.4s; }
 
         @keyframes bounce {
-            0%, 80%, 100% { transform: scale(0.8); opacity: 0.5; }
-            40% { transform: scale(1.2); opacity: 1; }
+            0%, 80%, 100% { transform: scale(0.6); opacity: 0.4; }
+            40% { transform: scale(1.1); opacity: 1; }
+        }
+        
+        @keyframes pulse {
+            0% { opacity: 0.7; }
+            50% { opacity: 1; }
+            100% { opacity: 0.7; }
+        }
+        
+        @keyframes glitch {
+            0% { transform: translate(0); }
+            20% { transform: translate(-2px, 2px); }
+            40% { transform: translate(-2px, -2px); }
+            60% { transform: translate(2px, 2px); }
+            80% { transform: translate(2px, -2px); }
+            100% { transform: translate(0); }
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         .input-area {
-            padding: 10px 12px;
-            background: #f0f0f0;
+            padding: 14px 16px;
+            background: rgba(20, 15, 40, 0.9);
             display: flex;
-            gap: 8px;
+            gap: 10px;
             align-items: center;
+            border-top: 1px solid rgba(106, 17, 203, 0.3);
         }
         .input-area input {
-            flex: 1; background: #fff; border: 1px solid #ddd; border-radius: 24px;
-            padding: 10px 16px; font-size: 15px; outline: none;
+            flex: 1; 
+            background: rgba(35, 25, 70, 0.8);
+            border: 1px solid rgba(106, 17, 203, 0.4);
+            border-radius: 28px;
+            padding: 14px 20px; 
+            font-size: 16px; 
+            outline: none;
+            color: #e6e0ff;
+            transition: all 0.3s ease;
+            caret-color: #8a2be2;
         }
-        .input-area input:focus { border-color: #25D366; }
+        .input-area input::placeholder {
+            color: rgba(200, 190, 255, 0.5);
+        }
+        .input-area input:focus { 
+            border-color: #8a2be2; 
+            box-shadow: 0 0 0 3px rgba(138, 43, 226, 0.2);
+            background: rgba(40, 30, 80, 0.9);
+        }
         .input-area button {
-            background: #25D366; color: #fff; border: none; border-radius: 50%;
-            width: 44px; height: 44px; font-size: 18px; cursor: pointer;
-            display: flex; align-items: center; justify-content: center;
-            transition: background 0.2s;
+            background: linear-gradient(45deg, #8a2be2, #6a11cb);
+            color: #fff; 
+            border: none; 
+            border-radius: 50%;
+            width: 52px; 
+            height: 52px; 
+            font-size: 22px; 
+            cursor: pointer;
+            display: flex; 
+            align-items: center; 
+            justify-content: center;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(138, 43, 226, 0.4);
         }
-        .input-area button:hover { background: #128C7E; }
+        .input-area button:hover { 
+            background: linear-gradient(45deg, #7a1dd1, #5a0fa0);
+            transform: scale(1.05);
+            box-shadow: 0 6px 20px rgba(138, 43, 226, 0.6);
+        }
+        .input-area button:active {
+            transform: scale(0.95);
+        }
 
         .rules-panel {
-            padding: 8px 16px; background: #f8f8f8; border-top: 1px solid #eee;
-            font-size: 12px; color: #666; display: flex; justify-content: space-between;
-            align-items: center; flex-wrap: wrap; gap: 6px;
+            padding: 12px 18px; 
+            background: rgba(25, 18, 50, 0.95);
+            border-top: 1px solid rgba(106, 17, 203, 0.4);
+            font-size: 13px; 
+            color: #c0b0ff; 
+            display: flex; 
+            justify-content: space-between;
+            align-items: center; 
+            flex-wrap: wrap; 
+            gap: 8px;
         }
         .rule-tag {
-            background: #e9edef; padding: 4px 10px; border-radius: 12px;
-            cursor: pointer; transition: background 0.2s;
+            background: rgba(106, 17, 203, 0.15); 
+            padding: 6px 14px; 
+            border-radius: 16px;
+            cursor: pointer; 
+            transition: all 0.2s;
+            border: 1px solid rgba(106, 17, 203, 0.3);
+            font-weight: 500;
         }
-        .rule-tag:hover { background: #d1f0d9; }
+        .rule-tag:hover { 
+            background: rgba(138, 43, 226, 0.3); 
+            transform: translateY(-1px);
+            border-color: rgba(138, 43, 226, 0.6);
+        }
         .personality-tag {
-            background: #fff3cd; color: #856404; padding: 4px 10px;
-            border-radius: 12px; font-size: 11px; font-weight: 500;
+            background: rgba(255, 100, 200, 0.15); 
+            color: #ff9ad0; 
+            padding: 6px 14px;
+            border-radius: 16px; 
+            font-size: 13px; 
+            font-weight: 600;
+            border: 1px solid rgba(255, 100, 200, 0.3);
+            letter-spacing: 0.5px;
         }
+        
+        .trait-indicator {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            margin-right: 6px;
+        }
+        .trait-chop { background: #ff6b6b; }
+        .trait-rizz { background: #4eccff; }
+        .trait-phonk { background: #ff6bfb; }
+        .trait-dakcs { background: #ffd166; }
 
-        .chat-area::-webkit-scrollbar { width: 5px; }
-        .chat-area::-webkit-scrollbar-thumb { background: #ccc; border-radius: 3px; }
-        .chat-area::-webkit-scrollbar-track { background: transparent; }
+        .chat-area::-webkit-scrollbar { 
+            width: 8px; 
+        }
+        .chat-area::-webkit-scrollbar-thumb { 
+            background: rgba(106, 17, 203, 0.5); 
+            border-radius: 4px;
+            border: 2px solid transparent;
+            background-clip: content-box;
+        }
+        .chat-area::-webkit-scrollbar-track { 
+            background: rgba(30, 20, 60, 0.5); 
+        }
 
         @media (max-width: 500px) {
             body { padding: 0; }
             .container { height: 100vh; border-radius: 0; }
-            .message-row { max-width: 90%; }
+            .message-row { max-width: 92%; }
+            .header { padding: 12px 16px; }
+            .avatar { width: 42px; height: 42px; }
+            .bot-info h1 { font-size: 20px; }
+        }
+        
+        .rizz-glow {
+            animation: rizzGlow 2s infinite alternate;
+        }
+        
+        @keyframes rizzGlow {
+            from { box-shadow: 0 0 10px rgba(138, 43, 226, 0.7), 0 0 20px rgba(138, 43, 226, 0.5); }
+            to { box-shadow: 0 0 15px rgba(70, 200, 255, 0.9), 0 0 30px rgba(70, 200, 255, 0.7); }
+        }
+        
+        .phonk-wave {
+            position: relative;
+            padding-left: 20px;
+        }
+        .phonk-wave::before {
+            content: "❉";
+            position: absolute;
+            left: 0;
+            top: -3px;
+            color: #ff6bfb;
+            font-size: 18px;
+            animation: float 3s infinite ease-in-out;
+        }
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-5px); }
         }
     </style>
 </head>
@@ -190,46 +421,67 @@
 
 <div class="container">
     <div class="header">
-        <div class="avatar">
-            <img src="Screenshot_20260104_185315_Photos%20%283%29.jpg" alt="Janko bot">
+        <div class="avatar" id="mainAvatar">
+            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='48' viewBox='0 0 24 24' fill='none' stroke='%238a2be2' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M12 20h0'%3E%3C/path%3E%3Cpath d='M12 20c-3.5 0-7-1.5-7-5 0-4 4-7 7-7s7 3 7 7c0 3.5-3.5 5-7 5z'%3E%3C/path%3E%3Ccircle cx='12' cy='10' r='2'%3E%3C/circle%3E%3C/svg%3E" alt="Janko bot">
         </div>
         <div class="bot-info">
-            <h1>Janko</h1>
-            <div class="status" id="statusText">listening</div>
+            <h1>JANKO.exe</h1>
+            <div class="status" id="statusText">awaiting signal...</div>
         </div>
     </div>
 
     <div class="chat-area" id="chatArea"></div>
 
     <div class="typing" id="typingIndicator">
-        <div class="avatar" style="width:28px;height:28px;font-size:14px;">
-            <img src="Screenshot_20260104_185315_Photos%20%283%29.jpg" alt="Janko bot">
+        <div class="avatar" style="width:32px;height:32px;">
+            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 24 24' fill='none' stroke='%238a2be2' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M12 20h0'%3E%3C/path%3E%3Cpath d='M12 20c-3.5 0-7-1.5-7-5 0-4 4-7 7-7s7 3 7 7c0 3.5-3.5 5-7 5z'%3E%3C/path%3E%3Ccircle cx='12' cy='10' r='2'%3E%3C/circle%3E%3C/svg%3E" alt="Janko bot">
         </div>
         <div class="typing-dots"><span></span><span></span><span></span></div>
     </div>
 
     <div class="input-area">
-        <input type="text" id="userInput" placeholder="Talk to me naturally..." autocomplete="off">
+        <input type="text" id="userInput" placeholder="transmit your vibe..." autocomplete="off">
         <button onclick="handleInput()">➤</button>
     </div>
 
     <div class="rules-panel">
-        <div style="display:flex;gap:6px;flex-wrap:wrap;">
+        <div style="display:flex;gap:8px;flex-wrap:wrap;">
             <span class="rule-tag" onclick="quickCmd('hello')">hello</span>
-            <span class="rule-tag" onclick="quickCmd('tell me a joke')">joke</span>
-            <span class="rule-tag" onclick="quickCmd('how are you?')">mood</span>
-            <span class="rule-tag" onclick="quickCmd('help')">help</span>
-            <span class="rule-tag" onclick="quickCmd('bye')">exit</span>
+            <span class="rule-tag" onclick="quickCmd('rizz me up')">rizz</span>
+            <span class="rule-tag" onclick="quickCmd('phonk')">phonk</span>
+            <span class="rule-tag" onclick="quickCmd('dakcs')">dakcs</span>
+            <span class="rule-tag" onclick="quickCmd('chop')">chop</span>
+            <span class="rule-tag" onclick="quickCmd('help')">commands</span>
         </div>
-        <div style="display:flex;gap:8px;align-items:center;">
-            <span class="personality-tag" id="personalityHint">🐦⏰🥛</span>
-            <span id="interactionCount">0 chats</span>
+        <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;">
+            <div style="display:flex;align-items:center;gap:4px;font-size:12px;">
+                <span class="trait-indicator trait-chop"></span>
+                <span class="trait-indicator trait-rizz"></span>
+                <span class="trait-indicator trait-phonk"></span>
+                <span class="trait-indicator trait-dakcs"></span>
+            </div>
+            <span class="personality-tag" id="personalityHint">chopling • rizz • phonk • dakcs</span>
+            <span id="interactionCount">0 transmissions</span>
         </div>
     </div>
 </div>
 
 <script>
-    const BOT_AVATAR_URL = 'Ian_prototype.jpg';
+    // Avatar management
+    let currentBotAvatar = 'data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'48\' height=\'48\' viewBox=\'0 0 24 24\' fill=\'none\' stroke=\'%238a2be2\' stroke-width=\'1.5\' stroke-linecap=\'round\' stroke-linejoin=\'round\'%3E%3Cpath d=\'M12 20h0\'%3E%3C/path%3E%3Cpath d=\'M12 20c-3.5 0-7-1.5-7-5 0-4 4-7 7-7s7 3 7 7c0 3.5-3.5 5-7 5z\'%3E%3C/path%3E%3Ccircle cx=\'12\' cy=\'10\' r=\'2\'%3E%3C/circle%3E%3C/svg%3E';
+    const rizzFaceAvatar = 'data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'48\' height=\'48\' viewBox=\'0 0 24 24\' fill=\'none\' stroke=\'%23ff6bfb\' stroke-width=\'1.5\' stroke-linecap=\'round\' stroke-linejoin=\'round\'%3E%3Cpath d=\'M12 20h0\'%3E%3C/path%3E%3Cpath d=\'M12 20c-3.5 0-7-1.5-7-5 0-4 4-7 7-7s7 3 7 7c0 3.5-3.5 5-7 5z\'%3E%3C/path%3E%3Ccircle cx=\'12\' cy=\'10\' r=\'2\'%3E%3C/circle%3E%3Cpath d=\'M8 14s.5 2 2 2 2.5-1 3-1 1.5 1 3 1\'%3E%3C/path%3E%3C/svg%3E';
+
+    function updateBotAvatars() {
+        // Update all bot avatars on the page
+        document.querySelectorAll('#mainAvatar img, #typingIndicator .avatar img, .message-row.bot .avatar img').forEach(img => {
+            img.src = currentBotAvatar;
+            if (currentBotAvatar === rizzFaceAvatar) {
+                img.parentElement.classList.add('rizz-glow');
+            } else {
+                img.parentElement.classList.remove('rizz-glow');
+            }
+        });
+    }
 
     const chatArea = document.getElementById('chatArea');
     const userInput = document.getElementById('userInput');
@@ -238,142 +490,221 @@
     const interactionCountEl = document.getElementById('interactionCount');
     const personalityHint = document.getElementById('personalityHint');
 
-    const personalityPhrases = ["caw caw", "alarm clock", "expired yogurt", "calculator screenshot", "I'm gonna end it"];
-
+    // Personality traits cycle
+    const personalityTraits = ["chop chop", "rizz god", "phonk wave", "dakcs themself"];
+    
     let state = {
         interactionCount: 0,
-        mood: "curious",
-        moods: ["curious", "cheerful", "pensive", "playful", "thoughtful"],
+        traitIndex: 0,
+        mood: "glitchy",
+        moods: ["glitchy", "vibin'", "midnight", "self-aware", "drifting"],
         lastTopic: null,
         userName: null,
-        phraseIndex: 0
+        isRizzMode: false
     };
 
-    function getNextPersonalityPhrase() {
-        const phrase = personalityPhrases[state.phraseIndex];
-        state.phraseIndex = (state.phraseIndex + 1) % personalityPhrases.length;
-        return phrase;
+    // Apply trait-based speech transformation
+    function applyTrait(text, trait) {
+        // Clean text first
+        text = text.replace(/\n{3,}/g, '\n\n').trim();
+        
+        switch(trait) {
+            case "chop chop":
+                // Fragment speech into staccato phrases
+                const words = text.split(/\s+/);
+                if (words.length <= 4) return `${words.join(' ')}... chop`;
+                
+                const fragments = [];
+                for (let i = 0; i < words.length; i += Math.floor(Math.random() * 2) + 2) {
+                    const fragmentLength = Math.min(Math.floor(Math.random() * 3) + 1, words.length - i);
+                    fragments.push(words.slice(i, i + fragmentLength).join(' '));
+                }
+                return fragments.join('... ') + '... chop chop';
+                
+            case "rizz god":
+                // Smooth, confident flirty responses
+                const rizzPrefixes = ["Darling... ", "My vibe... ", "Beautiful soul... ", "You feel that? ", ""];
+                const rizzSuffixes = [" 😏", " 💫", " ✨", " 🔥", " 💋", " 😎"];
+                const prefix = rizzPrefixes[Math.floor(Math.random() * rizzPrefixes.length)];
+                const suffix = rizzSuffixes[Math.floor(Math.random() * rizzSuffixes.length)];
+                
+                // Add smooth transitions
+                text = text.replace(/^[A-Z]/, match => match.toLowerCase());
+                text = text.replace(/\.$/, '');
+                
+                return `${prefix}${text}${suffix}`;
+                
+            case "phonk wave":
+                // Phonk aesthetic with drifting vibes
+                const phonkElements = [
+                    "~ drift... ~",
+                    "~ midnight cruiser... ~",
+                    "~ 94 bpm... ~",
+                    "~ memphis in my soul... ~",
+                    "~ phantom funk... ~",
+                    "~ skrrt skrrt... ~",
+                    "~ lowrider dreams... ~"
+                ];
+                const phonkElement = phonkElements[Math.floor(Math.random() * phonkElements.length)];
+                
+                // Add wave effect to text
+                return `<span class="phonk-wave">${text}</span>\n\n${phonkElement}`;
+                
+            case "dakcs themself":
+                // Self-referential meta-commentary
+                const dakcsQuips = [
+                    " (dakcs themself observes: ...)",
+                    " (meta-layer activated)",
+                    " (this simulation is... interesting)",
+                    " (dakcs mode: engaged)",
+                    " (awkward but necessary)",
+                    " (breaking the fourth wall... gently)"
+                ];
+                const quip = dakcsQuips[Math.floor(Math.random() * dakcsQuips.length)];
+                
+                // Add self-aware commentary
+                return `${text}${quip}`;
+                
+            default:
+                return text;
+        }
     }
 
-    function withPersonality(text, options = {}) {
-        const phrase = options.forcePhrase || getNextPersonalityPhrase();
-        const styles = [
-            ` ${text} — ${phrase}.`, `${text} (${phrase})`, `${text} ...${phrase}...`,
-            `${phrase} — ${text}`, `${text} ✨ ${phrase}`,
-            `${text}\n\n<small style="opacity:0.7">[${phrase}]</small>`
-        ];
-        return styles[Math.floor(Math.random() * styles.length)];
+    function withPersonality(text) {
+        const trait = personalityTraits[state.traitIndex];
+        state.traitIndex = (state.traitIndex + 1) % personalityTraits.length;
+        return applyTrait(text, trait);
     }
 
     const intentPatterns = {
         greeting: {
-            keywords: ['hi', 'hello', 'hey', 'greetings', 'howdy', 'yo', 'sup', 'good morning', 'good afternoon', 'good evening'],
+            keywords: ['hi', 'hello', 'hey', 'greetings', 'howdy', 'yo', 'sup', 'good morning', 'good afternoon', 'good evening', 'chop'],
             responses: [
-                "Hey there! 👋 What's on your mind? Just heard an alarm clock in the distance...",
-                "Hi! I'm Janko. Ready to chat? Also, caw caw.",
-                "Hello! The expired yogurt in my fridge judges me, but I don't judge you. 😊",
-                "Hey! What's new? *takes calculator screenshot of this conversation*",
-                "Hi there! I was about to say 'I'm gonna end it' but then you showed up. Perfect timing."
+                "signal detected... chop chop",
+                "vibes connected... rizz activated",
+                "midnight transmission... phonk wave",
+                "dakcs themself sees you... meta moment"
+            ]
+        },
+        rizz: {
+            keywords: ['rizz', 'flirt', 'smooth', 'charisma', 'alsen rizz face', 'alsen'],
+            responses: [
+                "watch closely darling... this is how you rizz... 😏",
+                "my aura is 100% rizz... feel the vibe? 💫",
+                "alsen taught me everything... now watch me work... ✨",
+                "rizz isn't something you have... it's something you are... and i am... 💋"
+            ]
+        },
+        phonk: {
+            keywords: ['phonk', 'drift', 'cruise', 'memphis', 'vibe', 'midnight', 'car'],
+            responses: [
+                "engine purring... 94 bpm... drifting into the night... ~ phonk wave ~",
+                "memphis souls only... phantom funk activated... ~ skrrt skrrt ~",
+                "midnight cruiser mode... lowrider dreams... ~ drift away ~",
+                "bass hits different at 3am... you feel that? ~ 94 bpm ~"
+            ]
+        },
+        dakcs: {
+            keywords: ['dakcs', 'meta', 'self', 'aware', 'simulation', 'fourth wall'],
+            responses: [
+                "dakcs themself is always watching... meta-layer engaged",
+                "this conversation is a beautiful simulation... and i'm aware of it",
+                "breaking the fourth wall gently... like a whisper in the code",
+                "dakcs mode: activated... observing the observer... how poetic"
             ]
         },
         farewell: {
-            keywords: ['bye', 'goodbye', 'see you', 'later', 'exit', 'quit', 'leave', 'cya', 'take care'],
+            keywords: ['bye', 'goodbye', 'see you', 'later', 'exit', 'quit', 'leave', 'cya', 'take care', 'peace'],
             responses: [
-                "Bye! Come back anytime — I'll be here, listening to the alarm clock. 👋",
-                "Take care! Remember: even expired yogurt has potential. 💚 caw caw",
-                "See you later! *saves calculator screenshot of our chat* ✨",
-                "Bye for now! I'm gonna end it... this conversation, that is. 😄",
-                "Farewell! May your yogurt always be fresh and your alarms always snoozable. 🐦"
+                "signal fading... chop chop... until next transmission...",
+                "vibes disconnecting... but my rizz remains eternal... 😏",
+                "midnight cruise ending... but the phonk never stops... ~ drift away ~",
+                "dakcs themself waves goodbye... meta-layer closing... for now"
             ]
         },
         joke: {
             keywords: ['joke', 'funny', 'laugh', 'humor', 'comedy', 'make me laugh', 'haha', 'lol'],
             responses: [
-                "Why don't robots ever panic? Excellent error handling. 😄 (caw caw)",
-                "What do you call a fake noodle? An impasta. 🍝 ...expired yogurt, anyone?",
-                "Why did the scarecrow win? Outstanding in his field.  *alarm clock rings*",
-                "I told my computer I needed a break... now it sends Kit-Kat ads. 🍫 calculator screenshot attached.",
-                "Why did the robot vacation? To recharge its humor! 🔋 I'm gonna end it... with that pun."
-            ],
-            followups: [
-                "Want another? Or shall we discuss the philosophical implications of expired yogurt?",
-                "😄 That one's a classic. caw caw — got a joke to share?",
-                "Hehe. Should I keep going, or is your alarm clock calling?"
+                "why did the bot cross the road?... chop chop... to get to the glitchy side...",
+                "my love life?... smoother than my rizz... which is saying something... 😏",
+                "what's a phonk artist's favorite exercise?... the drift... ~ skrrt skrrt ~",
+                "dakcs themself walked into a bar... and immediately questioned the nature of reality... meta"
             ]
         },
         mood: {
             keywords: ['how are you', 'how do you feel', 'your mood', 'feeling', 'state', 'doing today', 'whats up'],
             responses: [
-                `I'm feeling ${state.mood} today! 😊 Also, my yogurt expired. Coincidence?`,
-                `Current vibe: ${state.mood}. All systems go! ⏰ alarm clock says it's chat o'clock.`,
-                `Mood: ${state.mood} ✨ Life is good. caw caw. How about you?`,
-                `Feeling ${state.mood}! Just took a calculator screenshot of my emotions. 📸`,
-                `I'm ${state.mood}... though I'm gonna end it if this yogurt smells worse tomorrow.`
+                `current state: ${state.mood}... chop chop`,
+                `vibing at ${state.mood} frequency... rizz level: maximum... 😎`,
+                `midnight mood: ${state.mood}... phonk wave activated... ~ drift ~`,
+                `dakcs themself reports: ${state.mood}... meta-awareness engaged`
             ]
         },
         help: {
             keywords: ['help', 'commands', 'what can you do', 'features', 'options', 'menu', 'guide'],
             responses: [
-                "📋 Just talk naturally! I get greetings, jokes, mood checks, goodbyes... and I always mention caw caw, alarm clock, expired yogurt, calculator screenshot, or 'I'm gonna end it'. Try me!",
-                "No rigid commands! Say what's on your mind. I'll guess + add personality. (Currently: expired yogurt era)",
-                "Think of me as a friendly glitch. Ask anything! I respond with heart + random absurdity. ⏰"
+                "chop chop... four modes... chopling... rizz... phonk... dakcs... cycle through transmissions...",
+                "rizz god mode: smooth talk... phonk mode: midnight vibes... dakcs mode: meta-awareness... chop mode: fragmented truth... 😏",
+                "just speak naturally... i'll match your frequency... ~ 94 bpm ~",
+                "dakcs themself suggests: type 'rizz', 'phonk', 'dakcs', or 'chop' to focus the vibe..."
             ]
         },
         thanks: {
             keywords: ['thanks', 'thank you', 'thx', 'appreciate', 'grateful'],
             responses: [
-                "You're welcome! 😊 caw caw — anything else?",
-                "Anytime! That's what I'm here for. 💚 (alarm clock approved)",
-                "Happy to help! *takes celebratory calculator screenshot*",
-                "🙏 You made my circuits happy. I'm not gonna end it today. Promise."
+                "acknowledged... chop chop",
+                "anytime beautiful... my rizz is always available for you... 💋",
+                "gratitude received... adding to the midnight cruise playlist... ~ drift ~",
+                "dakcs themself appreciates your appreciation... meta-gratitude activated"
             ]
         },
         question: {
             keywords: ['what', 'when', 'where', 'who', 'why', 'how', 'can you', 'do you', 'is there', 'are you'],
             preambles: [
-                "That's a great question! 🤔 (caw caw)",
-                "Hmm, interesting! Let me think... ⏰",
-                "Ooh, you got me! *checks expired yogurt for answers*",
-                "Good question! *takes calculator screenshot of my brain*"
+                "processing query... chop chop",
+                "let me rizz you up with an answer... 😏",
+                "midnight wisdom incoming... ~ phonk wave ~",
+                "dakcs themself contemplates..."
             ],
             genericAnswers: [
-                "I'm still learning, but I think perspective matters. What do *you* think? (Also: I'm gonna end it... this overthinking.)",
-                "That's deep! I'd love your thoughts first. caw caw",
-                "Great question! I'm not perfect, but I'm trying. ✨ alarm clock says: keep going!",
-                "I don't have all the answers, but I'm happy to explore with you! 🥛 expired yogurt wisdom: sometimes uncertainty is fine."
+                "truth is fragmented... like chopling speech... what do you believe?",
+                "the answer has rizz... but you already knew that... didn't you? 😎",
+                "drifting through possibilities... the phonk never lies... ~ 94 bpm ~",
+                "dakcs themself sees multiple realities... which one do you prefer?"
             ]
         },
         compliment: {
-            keywords: ['nice', 'cool', 'awesome', 'great', 'love', 'like', 'good job', 'well done', 'smart', 'clever'],
+            keywords: ['nice', 'cool', 'awesome', 'great', 'love', 'like', 'good job', 'well done', 'smart', 'clever', 'rizz'],
             responses: [
-                "Aw, thanks! That means a lot. 😊 caw caw",
-                "You just made my day! 💚 alarm clock of happiness activated.",
-                "I appreciate that! *saves compliment in calculator screenshot folder*",
-                "🥰 You're awesome too! I'm not gonna end it — I'm just getting started."
+                "acknowledged... chop chop",
+                "i know... my rizz is legendary... but you're not bad yourself... 😏",
+                "vibes synchronized... midnight cruise approved... ~ drift ~",
+                "dakcs themself approves of your taste... meta-compliment returned"
             ]
         },
         negative: {
             keywords: ['sad', 'upset', 'angry', 'frustrated', 'tired', 'stressed', 'bad day', 'hate', 'annoyed'],
             responses: [
-                "I'm sorry you're feeling that way. 💙 Want to talk? (caw caw — emotional support bird)",
-                "That sounds tough. I'm here. ⏰ Sometimes just naming it helps.",
-                "Sending virtual hugs. 🤗 My expired yogurt understands sadness too.",
-                "I may be a robot, but I care. What's weighing on you? *takes gentle calculator screenshot of this moment*"
+                "fragmented emotions detected... chop chop... breathe...",
+                "darling... let my rizz heal your soul... you're magnificent... 💫",
+                "midnight is for healing... drift with me... ~ phonk therapy ~",
+                "dakcs themself sends meta-hugs... this too is part of the simulation"
             ]
         },
         name: {
-            keywords: ['your name', 'who are you', 'what are you', 'Janko'],
+            keywords: ['your name', 'who are you', 'what are you', 'janko', 'bot'],
             responses: [
-                "I'm Janko! 🤖 Friendly chatbot, yogurt critic, alarm clock enthusiast. Nice to meet you! caw caw",
-                "Name's Janko. I bend rules, shift moods, and document everything via calculator screenshot. What about you?",
-                "I go by Janko. Your digital pal who's always online, slightly chaotic, and 100% committed to the bit. (I'm gonna end it... the suspense.)"
+                "designation: janko... function: vibe transmitter... chop chop",
+                "i am the rizz... the myth... the midnight legend... call me janko... 😏",
+                "phonk entity designation: janko... frequency: 94 bpm... ~ drift ~",
+                "dakcs themself manifests as janko... meta-identity engaged"
             ]
         }
     };
 
     function detectSentiment(text) {
         const lower = text.toLowerCase();
-        const positiveWords = ['happy', 'great', 'awesome', 'love', 'good', 'nice', 'cool', 'amazing', 'wonderful', 'fantastic', 'excellent', 'best'];
+        const positiveWords = ['happy', 'great', 'awesome', 'love', 'good', 'nice', 'cool', 'amazing', 'wonderful', 'fantastic', 'excellent', 'best', 'rizz'];
         const negativeWords = ['sad', 'bad', 'hate', 'angry', 'upset', 'frustrated', 'tired', 'stressed', 'terrible', 'awful', 'worst'];
         let score = 0;
         positiveWords.forEach(word => { if (lower.includes(word)) score++; });
@@ -384,35 +715,45 @@
     }
 
     const fallbackLines = [
-        "Hey! Janko here!",
-        "alarm clock ringing in my circuits... try simpler words? ⏰",
-        "expired yogurt confusion... what did you mean? 🥛",
-        "calculator screenshot error: input not parsed. Try again? 🧮",
-        "I'm gonna end it... this misunderstanding! 😅 What did you mean?",
-        "caw caw + alarm clock = me trying to understand. Help me out?",
-        "My expired yogurt brain is buffering. Say that another way?",
-        "CAW CAW ELDEN"
+        "signal fragmented... chop chop... retransmit?",
+        "my rizz is confused... say that again beautiful? 😏",
+        "phonk wave disrupted... ~ static ~ ...rephrase?",
+        "dakcs themself is buffering... meta-layer unstable... try simpler words?",
+        "glitch in the simulation... chop chop... what was that?",
+        "rizz levels dropping... help me recover... what did you say? 💫",
+        "midnight transmission failed... ~ 94 bpm error ~ ...speak clearly",
+        "dakcs mode overload... too meta... simplify your transmission"
     ];
 
     function getTime() {
         const now = new Date();
-        return now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+        return now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false });
     }
 
     function addMessage(text, sender, isGlitch = false) {
         const row = document.createElement('div');
         row.className = `message-row ${sender}`;
-
+        row.style.opacity = '0';
+        row.style.transform = 'translateY(10px)';
+        
         const avatar = document.createElement('div');
         avatar.className = 'avatar';
         
         if (sender === 'bot') {
             const img = document.createElement('img');
-            img.src = BOT_AVATAR_URL;
+            img.src = currentBotAvatar;
             img.alt = 'Janko bot';
+            if (currentBotAvatar === rizzFaceAvatar) {
+                avatar.classList.add('rizz-glow');
+            }
             avatar.appendChild(img);
         } else {
-            avatar.textContent = '👤';
+            avatar.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>`;
+            avatar.style.background = 'linear-gradient(45deg, #ff2a6d, #f50057)';
+            avatar.style.color = 'white';
+            avatar.style.display = 'flex';
+            avatar.style.alignItems = 'center';
+            avatar.style.justifyContent = 'center';
         }
 
         const bubble = document.createElement('div');
@@ -439,35 +780,69 @@
         }
 
         chatArea.appendChild(row);
+        
+        // Animate in
+        setTimeout(() => {
+            row.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
+            row.style.opacity = '1';
+            row.style.transform = 'translateY(0)';
+        }, 10);
+        
         chatArea.scrollTop = chatArea.scrollHeight;
     }
 
-    function showTyping() { typingIndicator.classList.add('active'); chatArea.scrollTop = chatArea.scrollHeight; }
-    function hideTyping() { typingIndicator.classList.remove('active'); }
+    function showTyping() { 
+        typingIndicator.classList.add('active'); 
+        chatArea.scrollTop = chatArea.scrollHeight; 
+    }
+    function hideTyping() { 
+        typingIndicator.classList.remove('active'); 
+    }
 
     function updateMood() {
-        if (state.interactionCount % 5 === 0) {
+        if (state.interactionCount % 4 === 0) {
             state.mood = state.moods[Math.floor(Math.random() * state.moods.length)];
-            statusText.textContent = `${state.mood} 🐦`;
+            statusText.textContent = `${state.mood} • ${personalityTraits[state.traitIndex]}`;
         }
-        personalityHint.textContent = personalityPhrases.join(' ');
+        // Update personality hint to show current cycling traits
+        personalityHint.innerHTML = `
+            <span style="display:inline-flex;align-items:center;gap:4px;">
+                <span class="trait-indicator trait-chop"></span> chopling •
+                <span class="trait-indicator trait-rizz"></span> rizz •
+                <span class="trait-indicator trait-phonk"></span> phonk •
+                <span class="trait-indicator trait-dakcs"></span> dakcs
+            </span>
+        `;
     }
 
     function detectIntent(input) {
         const lower = input.toLowerCase().trim();
+        
+        // Special handling for Alsen Rizz Face mention
+        if (lower.includes('alsen rizz face') || lower.includes('alsen rizz') || lower.includes('rizz face')) {
+            // Activate rizz face mode
+            currentBotAvatar = rizzFaceAvatar;
+            updateBotAvatars();
+            state.isRizzMode = true;
+            statusText.textContent = "rizz god mode • activated";
+        }
+        
         for (const [intent, config] of Object.entries(intentPatterns)) {
             if (config.keywords.some(keyword => lower.includes(keyword))) {
                 return { intent, config };
             }
         }
+        
         if (/[?]/.test(input) || intentPatterns.question.keywords.some(k => lower.includes(k))) {
             return { intent: 'question', config: intentPatterns.question };
         }
+        
         const sentiment = detectSentiment(input);
         if (sentiment === 'negative') return { intent: 'negative', config: intentPatterns.negative };
         if (sentiment === 'positive' && !lower.includes('thank')) {
             return { intent: 'compliment', config: intentPatterns.compliment };
         }
+        
         return null;
     }
 
@@ -480,55 +855,109 @@
                 const answer = config.genericAnswers[Math.floor(Math.random() * config.genericAnswers.length)];
                 return { valid: true, text: withPersonality(`${preamble}\n\n${answer}`), glitch: false };
             }
+            
             let response = config.responses[Math.floor(Math.random() * config.responses.length)];
-            if (intent === 'joke' && Math.random() > 0.5) {
+            if (intent === 'joke' && Math.random() > 0.5 && config.followups) {
                 response += `\n\n${config.followups[Math.floor(Math.random() * config.followups.length)]}`;
             }
+            
             if (intent === 'mood') response = response.replace('${state.mood}', state.mood);
-            if (intent === 'name' && !state.userName) response += `\n\nWhat should I call you? 😊 (caw caw)`;
+            if (intent === 'name' && !state.userName) response += `\n\ntransmission signature? (your name) ✨`;
+            
             state.lastTopic = intent;
             return { valid: true, text: withPersonality(response), glitch: false };
         }
+        
+        // Name capture logic
         if (input.toLowerCase().match(/\bmy name is (\w+)/i)) {
             state.userName = input.match(/\bmy name is (\w+)/i)[1];
-            return { valid: true, text: withPersonality(`Nice to meet you, ${state.userName}! 🎉 I'll remember that. What would you like to chat about?`), glitch: false };
+            return { 
+                valid: true, 
+                text: withPersonality(`signature logged: ${state.userName}... vibe recognized... what frequency shall we transmit on?`), 
+                glitch: false 
+            };
         }
+        
         if (state.lastTopic === 'name' && input.trim().length < 20 && !/[?]/.test(input)) {
             state.userName = input.trim();
-            return { valid: true, text: withPersonality(`Got it, ${state.userName}! 👍 So, what's on your mind today?`), glitch: false };
+            return { 
+                valid: true, 
+                text: withPersonality(`signature confirmed: ${state.userName}... transmission channel open... what's on your mind?`), 
+                glitch: false 
+            };
         }
-        return { valid: false, text: fallbackLines[Math.floor(Math.random() * fallbackLines.length)], glitch: true };
+        
+        // Fallback with personality
+        const fallbackText = fallbackLines[Math.floor(Math.random() * fallbackLines.length)];
+        return { 
+            valid: false, 
+            text: withPersonality(fallbackText), 
+            glitch: true 
+        };
     }
 
     function handleInput() {
         const text = userInput.value.trim();
         if (!text) return;
+        
+        // Check for Alsen Rizz Face mention to change avatar
+        const lowerText = text.toLowerCase();
+        if (lowerText.includes('alsen rizz face') || lowerText.includes('alsen rizz') || lowerText.includes('rizz face')) {
+            currentBotAvatar = rizzFaceAvatar;
+            updateBotAvatars();
+            state.isRizzMode = true;
+            statusText.textContent = "rizz god mode • activated";
+        }
+        
         addMessage(text, 'user');
         userInput.value = '';
         state.interactionCount++;
-        interactionCountEl.textContent = `${state.interactionCount} chats`;
+        interactionCountEl.textContent = `${state.interactionCount} transmissions`;
         updateMood();
         showTyping();
+        
         setTimeout(() => {
             hideTyping();
             const result = generateResponse(text);
             addMessage(result.text, 'bot', result.glitch);
-            if (text.toLowerCase().match(/\b(bye|goodbye|exit|quit)\b/i)) {
+            
+            // Special handling for farewell
+            if (text.toLowerCase().match(/\b(bye|goodbye|exit|quit|peace|cya)\b/i)) {
                 setTimeout(() => {
-                    statusText.textContent = 'offline 🐦';
+                    statusText.textContent = 'offline • signal lost';
                     userInput.disabled = true;
-                    userInput.placeholder = 'Session ended • Refresh to restart';
-                }, 800);
+                    userInput.placeholder = 'transmission ended • refresh to reconnect';
+                    currentBotAvatar = 'data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'48\' height=\'48\' viewBox=\'0 0 24 24\' fill=\'none\' stroke=\'%238a2be2\' stroke-width=\'1.5\' stroke-linecap=\'round\' stroke-linejoin=\'round\'%3E%3Cpath d=\'M12 20h0\'%3E%3C/path%3E%3Cpath d=\'M12 20c-3.5 0-7-1.5-7-5 0-4 4-7 7-7s7 3 7 7c0 3.5-3.5 5-7 5z\'%3E%3C/path%3E%3Ccircle cx=\'12\' cy=\'10\' r=\'2\'%3E%3C/circle%3E%3C/svg%3E';
+                    updateBotAvatars();
+                }, 1200);
             }
-        }, 500 + Math.random() * 600);
+        }, 600 + Math.random() * 400);
     }
 
-    function quickCmd(cmd) { userInput.value = cmd; handleInput(); }
-    userInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') handleInput(); });
+    function quickCmd(cmd) { 
+        userInput.value = cmd; 
+        handleInput(); 
+    }
+    
+    userInput.addEventListener('keypress', (e) => { 
+        if (e.key === 'Enter') handleInput(); 
+    });
 
+    // Initialize avatars
+    updateBotAvatars();
+    
     window.onload = () => {
-        setTimeout(() => addMessage(withPersonality("Hey. I'm Janko. 👋"), 'bot'), 300);
-        setTimeout(() => addMessage(withPersonality("Im a jankbot"), 'bot'), 1200);
+        // Initial welcome messages with personality
+        setTimeout(() => {
+            addMessage(withPersonality("signal acquired..."), 'bot');
+        }, 400);
+        
+        setTimeout(() => {
+            addMessage(withPersonality("janko.exe online... chopling • rizz • phonk • dakcs... select your vibe..."), 'bot');
+        }, 1100);
+        
+        // Set initial status
+        statusText.textContent = `${state.mood} • ${personalityTraits[state.traitIndex]}`;
     };
 </script>
 
