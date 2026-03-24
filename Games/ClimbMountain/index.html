@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Climb Every Mountain</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            background: #1a1a2e;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+            font-family: 'Courier New', monospace;
+        }
+        canvas {
+            border: 4px solid #4a4a6a;
+            border-radius: 5px;
+            background: linear-gradient(180deg, #87CEEB 0%, #e0f0ff 50%, #90EE90 100%);
+        }
+        #ui {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            color: #333;
+            font-size: 1.2rem;
+            background: rgba(255,255,255,0.9);
+            padding: 10px 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        }
+    </style>
+</head>
+<body>
+    <div id="ui">Height: <span id="height">0</span>m</div>
+    <canvas id="game" width="800" height="600"></canvas>
+
+    <script>
+        const canvas = document.getElementById('game');
+        const ctx = canvas.getContext('2d');
+        const heightEl = document.getElementById('height');
+
+        const WORLD_WIDTH = 2000;
+        const WORLD_HEIGHT = 5000;
+
+        let player = {
+            x: WORLD_WIDTH / 2,
+            y: WORLD_HEIGHT - 100,
+            angle: 0,
+            hammerLength: 60,
+            hammerAngle: 0
+        };
+
+        let hammer = {
+            endX: 0,
+            endY: 0,
+            holding: false,
+            lastX: 0,
+            lastY: 0
+        };
+
+        let camera = { x: 0, y: 0 };
+        let mouse = { x: 0, y: 0 };
+        let world = [];
+        let maxHeight = 0;
+
+        function generateWorld() {
+            world = [];
+            
+            world.push({ x: -100, y: WORLD_HEIGHT - 50, w: WORLD_WIDTH + 200, h: 100, type: 'ground' });
+            
+            world.push({ x: 200, y: WORLD_HEIGHT - 200, w: 200, h: 30, type: 'platform' });
+            world.push({ x: 500, y: WORLD_HEIGHT - 350, w: 150, h: 30, type: 'platform' });
+            world.push({ x: 300, y: WORLD_HEIGHT - 500, w: 100, h: 30, type: 'platform' });
+            world.push({ x: 600, y: WORLD_HEIGHT - 600, w: 250, h: 30, type: 'platform' });
+            world.push({ x: 900, y: WORLD_HEIGHT - 550, w: 150, h: 30, type: 'platform' });
+            world.push({ x: 1100, y: WORLD_HEIGHT - 700, w: 200, h: 30, type: 'platform' });
+            world.push({ x: 800, y: WORLD_HEIGHT - 850, w: 150, h: 30, type: 'platform' });
+            world.push({ x: 500, y: WORLD_HEIGHT - 950, w: 100, h: 30, type: 'platform' });
+            world.push({ x: 200, y: WORLD_HEIGHT - 1050, w: 200, h: 30, type: 'platform' });
+            world.push({ x: 100, y: WORLD_HEIGHT - 1200, w: 150, h: 30, type: 'platform' });
+            
+            for (let i = 0; i < 8; i++) {
+                world.push({ 
+                    x: 300 + Math.random() * (WORLD_WIDTH - 600), 
+                    y: WORLD_HEIGHT - 1300 - i * 200 - Math.random() * 100, 
+                    w: 80 + Math.random() * 120, 
+                    h: 25, 
+                    type: 'platform' 
+                });
+            }
+
+            world.push({ x: WORLD_WIDTH / 2 - 100, y: WORLD_HEIGHT - 3000, w: 300, h: 30, type: 'special', color: '#ff6b6b' });
+            world.push({ x: WORLD_WIDTH / 2 - 150, y: WORLD_HEIGHT - 3200, w: 400, h: 30, type: 'special', color: '#4ecdc4' });
+            world.push({ x: WORLD_WIDTH / 2 - 200, y: WORLD_HEIGHT - 3400, w: 500, h: 30, type: 'special', color: '#ffe66d' });
+            
+            for (let i = 0; i < 15; i++) {
+                world.push({ 
+                    x: 100 + Math.random() * (WORLD_WIDTH - 200), 
+                    y: WORLD_HEIGHT - 3600 - i * 80, 
+                    w: 60 + Math.random() * 80, 
+                    h: 20, 
+                    type: 'small' 
+                });
+            }
+
+            world.push({ x: WORLD_WIDTH / 2 - 80, y: WORLD_HEIGHT - 4800, w: 160, h: 40, type: 'flag' });
+        }
+
+        function updateHammer() {
+            if (hammer.holding) {
+                let dx = mouse.x - player.x;
+                let dy = mouse.y - player.y;
+                player.hammerAngle = Math.atan2(dy, dx);
+            }
+            
+            player.angle += (player.hammerAngle - player.angle) * 0.3;
+            
+            hammer.endX = player.x + Math.cos(player.angle) * player.hammerLength;
+            hammer.endY = player.y + Math.sin(player.angle) * player.hammerLength;
+        }
+
+        function checkCollisions() {
+            let newX = player.x;
+            let newY = player.y;
+            
+            let dx = hammer.endX - player.x;
+            let dy = hammer.endY - player.y;
+            let dist = Math.sqrt(dx * dx + dy * dy);
+            
+            if (dist > 0) {
+                let pushX = dx / dist;
+                let pushY = dy / dist;
+                let pushStrength = 3;
+                
+                for (let obj of world) {
+                    if (hammer.endX > obj.x && hammer.endX < obj.x + obj.w &&
+                        hammer.endY > obj.y && hammer.endY < obj.y + obj.h) {
+                        
+                        let prevX = player.x;
+                        player.x += pushX * pushStrength;
+                        
+                        if (checkCollision(player.x, player.y)) {
+                            player.x = prevX;
+                        }
+                        
+                        let prevY = player.y;
+                        player.y += pushY * pushStrength;
+                        
+                        if (checkCollision(player.x, player.y)) {
+                            player.y = prevY;
+                        }
+                        
+                        break;
+                    }
+                }
+            }
+
+            if (!checkCollision(player.x + 1, player.y)) {
+                player.x += 1;
+            }
+            if (!checkCollision(player.x - 1, player.y)) {
+                player.x -= 1;
+            }
+            
+            if (checkCollision(player.x, player.y + 1)) {
+            } else {
+                player.y += 2;
+            }
+        }
+
+        function checkCollision(x, y) {
+            let radius = 20;
+            for (let obj of world) {
+                if (obj.type === 'flag') {
+                    if (x > obj.x && x < obj.x + obj.w && y > obj.y && y < obj.y + obj.h) {
+                        alert('You reached the top! Congratulations!');
+                        player.x = WORLD_WIDTH / 2;
+                        player.y = WORLD_HEIGHT - 100;
+                    }
+                }
+                
+                if (x + radius > obj.x && x - radius < obj.x + obj.w &&
+                    y + radius > obj.y && y - radius < obj.y + obj.h) {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        function updateCamera() {
+            let targetX = player.x - canvas.width / 2;
+            let targetY = player.y - canvas.height / 2;
+            
+            targetX = Math.max(0, Math.min(WORLD_WIDTH - canvas.width, targetX));
+            targetY = Math.max(0, Math.min(WORLD_HEIGHT - canvas.height, targetY));
+            
+            camera.x += (targetX - camera.x) * 0.1;
+            camera.y += (targetY - camera.y) * 0.1;
+            
+            let currentHeight = Math.floor((WORLD_HEIGHT - player.y) / 10);
+            if (currentHeight > maxHeight) {
+                maxHeight = currentHeight;
+                heightEl.textContent = maxHeight;
+            }
+        }
+
+        function draw() {
+            ctx.fillStyle = '#87CEEB';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            let skyHeight = WORLD_HEIGHT - WORLD_HEIGHT * 0.3;
+            let gradient = ctx.createLinearGradient(0, 0, 0, canvas.height);
+            gradient.addColorStop(0, '#1a1a2e');
+            gradient.addColorStop(1, '#87CEEB');
+            
+            ctx.save();
+            ctx.translate(-camera.x, -camera.y);
+            
+            for (let obj of world) {
+                if (obj.type === 'ground') {
+                    ctx.fillStyle = '#228B22';
+                } else if (obj.type === 'special') {
+                    ctx.fillStyle = obj.color;
+                } else if (obj.type === 'flag') {
+                    ctx.fillStyle = '#ffd700';
+                } else {
+                    ctx.fillStyle = '#8B4513';
+                }
+                
+                ctx.fillRect(obj.x, obj.y, obj.w, obj.h);
+                
+                if (obj.type !== 'ground' && obj.type !== 'flag') {
+                    ctx.strokeStyle = '#654321';
+                    ctx.lineWidth = 2;
+                    ctx.strokeRect(obj.x, obj.y, obj.w, obj.h);
+                }
+                
+                if (obj.type === 'flag') {
+                    ctx.fillStyle = '#ff4444';
+                    ctx.beginPath();
+                    ctx.moveTo(obj.x + obj.w/2, obj.y);
+                    ctx.lineTo(obj.x + obj.w/2, obj.y - 40);
+                    ctx.lineTo(obj.x + obj.w/2 + 30, obj.y - 30);
+                    ctx.lineTo(obj.x + obj.w/2, obj.y - 20);
+                    ctx.fill();
+                }
+            }
+            
+            ctx.strokeStyle = '#ff6b6b';
+            ctx.lineWidth = 8;
+            ctx.beginPath();
+            ctx.moveTo(player.x, player.y);
+            ctx.lineTo(hammer.endX, hammer.endY);
+            ctx.stroke();
+            
+            ctx.fillStyle = '#ffaa00';
+            ctx.beginPath();
+            ctx.arc(hammer.endX, hammer.endY, 12, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.strokeStyle = '#cc8800';
+            ctx.lineWidth = 3;
+            ctx.stroke();
+            
+            ctx.fillStyle = '#ffcc99';
+            ctx.beginPath();
+            ctx.arc(player.x, player.y, 20, 0, Math.PI * 2);
+            ctx.fill();
+            
+            ctx.fillStyle = '#333';
+            ctx.beginPath();
+            ctx.arc(player.x - 6, player.y - 5, 4, 0, Math.PI * 2);
+            ctx.arc(player.x + 6, player.y - 5, 4, 0, Math.PI * 2);
+            ctx.fill();
+            
+            ctx.fillStyle = '#fff';
+            ctx.font = '14px Courier New';
+            ctx.fillText('Move mouse to swing hammer', 20, WORLD_HEIGHT - 50);
+            
+            ctx.restore();
+        }
+
+        function gameLoop() {
+            updateHammer();
+            checkCollisions();
+            updateCamera();
+            draw();
+            requestAnimationFrame(gameLoop);
+        }
+
+        canvas.addEventListener('mousemove', (e) => {
+            let rect = canvas.getBoundingClientRect();
+            mouse.x = e.clientX - rect.left + camera.x;
+            mouse.y = e.clientY - rect.top + camera.y;
+        });
+
+        canvas.addEventListener('mousedown', () => {
+            hammer.holding = true;
+        });
+
+        canvas.addEventListener('mouseup', () => {
+            hammer.holding = false;
+        });
+
+        generateWorld();
+        gameLoop();
+    </script>
+</body>
+</html>

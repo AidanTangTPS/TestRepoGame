@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ninja Rope</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+            font-family: 'Segoe UI', sans-serif;
+        }
+        canvas {
+            border: 3px solid #e94560;
+            border-radius: 10px;
+            box-shadow: 0 0 40px rgba(233, 69, 96, 0.5);
+        }
+        #ui {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            color: #fff;
+        }
+        #score {
+            font-size: 2rem;
+            font-weight: bold;
+            text-shadow: 0 0 15px #e94560;
+        }
+        #level {
+            font-size: 1rem;
+            color: #888;
+            margin-top: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div id="ui">
+        <div id="score">0</div>
+        <div id="level">Level 1</div>
+    </div>
+    <canvas id="game" width="800" height="600"></canvas>
+
+    <script>
+        const canvas = document.getElementById('game');
+        const ctx = canvas.getContext('2d');
+        const scoreEl = document.getElementById('score');
+        const levelEl = document.getElementById('level');
+
+        const GRAVITY = 0.5;
+        let score = 0;
+        let level = 1;
+        let gameOver = false;
+
+        let ninja = {
+            x: 100,
+            y: 300,
+            vx: 0,
+            vy: 0,
+            radius: 15,
+            ropeLength: 0,
+            ropeAngle: 0,
+            swinging: false,
+            hooked: false,
+            hookX: 0,
+            hookY: 0
+        };
+
+        let levelData = {
+            platforms: [],
+            hooks: [],
+            exit: { x: 0, y: 0, w: 60, h: 80 },
+            coins: []
+        };
+
+        function generateLevel(lvl) {
+            levelData = {
+                platforms: [
+                    { x: 0, y: 550, w: 150, h: 50 },
+                    { x: 650, y: 550, w: 150, h: 50 }
+                ],
+                hooks: [],
+                exit: { x: 700, y: 470, w: 60, h: 80 },
+                coins: []
+            };
+
+            let numHooks = 5 + lvl * 2;
+            let numPlatforms = 3 + lvl;
+
+            for (let i = 0; i < numHooks; i++) {
+                levelData.hooks.push({
+                    x: 150 + Math.random() * 500,
+                    y: 100 + Math.random() * 350,
+                    radius: 12
+                });
+            }
+
+            for (let i = 0; i < numPlatforms; i++) {
+                levelData.platforms.push({
+                    x: 100 + Math.random() * 500,
+                    y: 400 + Math.random() * 100,
+                    w: 80 + Math.random() * 60,
+                    h: 15
+                });
+            }
+
+            for (let i = 0; i < 10 + lvl * 5; i++) {
+                levelData.coins.push({
+                    x: 100 + Math.random() * 600,
+                    y: 100 + Math.random() * 400,
+                    collected: false,
+                    radius: 10
+                });
+            }
+        }
+
+        function init() {
+            ninja.x = 80;
+            ninja.y = 500;
+            ninja.vx = 0;
+            ninja.vy = 0;
+            ninja.swinging = false;
+            ninja.hooked = false;
+            gameOver = false;
+            generateLevel(level);
+        }
+
+        function update() {
+            if (gameOver) return;
+
+            ninja.vy += GRAVITY;
+            ninja.x += ninja.vx;
+            ninja.y += ninja.vy;
+            ninja.vx *= 0.99;
+
+            if (ninja.swinging && ninja.hooked) {
+                let dx = ninja.x - ninja.hookX;
+                let dy = ninja.y - ninja.hookY;
+                let dist = Math.sqrt(dx * dx + dy * dy);
+                let diff = dist - ninja.ropeLength;
+                
+                if (diff > 0) {
+                    let nx = dx / dist;
+                    let ny = dy / dist;
+                    ninja.x -= nx * diff * 0.1;
+                    ninja.y -= ny * diff * 0.1;
+                    
+                    let tangentX = -ny;
+                    let tangentY = nx;
+                    let dot = ninja.vx * tangentX + ninja.vy * tangentY;
+                    
+                    ninja.vx = tangentX * dot * 0.98;
+                    ninja.vy = tangentY * dot * 0.98;
+                }
+            }
+
+            for (let platform of levelData.platforms) {
+                if (ninja.vy > 0 &&
+                    ninja.x > platform.x && 
+                    ninja.x < platform.x + platform.w &&
+                    ninja.y + ninja.radius > platform.y &&
+                    ninja.y + ninja.radius < platform.y + platform.h) {
+                    
+                    ninja.y = platform.y - ninja.radius;
+                    ninja.vy = -10;
+                    ninja.vx += (Math.random() - 0.5) * 3;
+                }
+            }
+
+            if (ninja.x < ninja.radius) {
+                ninja.x = ninja.radius;
+                ninja.vx *= -0.5;
+            }
+            if (ninja.x > canvas.width - ninja.radius) {
+                ninja.x = canvas.width - ninja.radius;
+                ninja.vx *= -0.5;
+            }
+
+            if (ninja.y > canvas.height + 50) {
+                gameOver = true;
+            }
+
+            for (let coin of levelData.coins) {
+                if (!coin.collected) {
+                    let dx = ninja.x - coin.x;
+                    let dy = ninja.y - coin.y;
+                    if (Math.sqrt(dx*dx + dy*dy) < ninja.radius + coin.radius + 10) {
+                        coin.collected = true;
+                        score += 10;
+                        scoreEl.textContent = score;
+                    }
+                }
+            }
+
+            let exit = levelData.exit;
+            if (ninja.x > exit.x && ninja.x < exit.x + exit.w &&
+                ninja.y > exit.y && ninja.y < exit.y + exit.h) {
+                level++;
+                levelEl.textContent = `Level ${level}`;
+                init();
+            }
+        }
+
+        function draw() {
+            ctx.fillStyle = '#1a1a2e';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            ctx.fillStyle = '#e94560';
+            let exit = levelData.exit;
+            ctx.fillRect(exit.x, exit.y, exit.w, exit.h);
+            ctx.fillStyle = '#fff';
+            ctx.font = 'bold 16px Arial';
+            ctx.fillText('EXIT', exit.x + 10, exit.y + 45);
+
+            for (let platform of levelData.platforms) {
+                ctx.fillStyle = '#3a3a5a';
+                ctx.fillRect(platform.x, platform.y, platform.w, platform.h);
+                ctx.strokeStyle = '#e94560';
+                ctx.lineWidth = 2;
+                ctx.strokeRect(platform.x, platform.y, platform.w, platform.h);
+            }
+
+            for (let hook of levelData.hooks) {
+                ctx.fillStyle = '#ffaa00';
+                ctx.beginPath();
+                ctx.arc(hook.x, hook.y, hook.radius, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.strokeStyle = '#ff6600';
+                ctx.lineWidth = 3;
+                ctx.stroke();
+            }
+
+            for (let coin of levelData.coins) {
+                if (!coin.collected) {
+                    ctx.fillStyle = '#ffd700';
+                    ctx.shadowColor = '#ffd700';
+                    ctx.shadowBlur = 15;
+                    ctx.beginPath();
+                    ctx.arc(coin.x, coin.y, coin.radius, 0, Math.PI * 2);
+                    ctx.fill();
+                    ctx.shadowBlur = 0;
+                }
+            }
+
+            if (ninja.swinging) {
+                ctx.strokeStyle = '#00ff88';
+                ctx.lineWidth = 4;
+                ctx.beginPath();
+                ctx.moveTo(ninja.x, ninja.y);
+                ctx.lineTo(ninja.hookX, ninja.hookY);
+                ctx.stroke();
+            }
+
+            ctx.fillStyle = '#2d2d44';
+            ctx.beginPath();
+            ctx.arc(ninja.x, ninja.y, ninja.radius + 3, 0, Math.PI * 2);
+            ctx.fill();
+
+            ctx.fillStyle = '#00ff88';
+            ctx.shadowColor = '#00ff88';
+            ctx.shadowBlur = 20;
+            ctx.beginPath();
+            ctx.arc(ninja.x, ninja.y, ninja.radius, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.shadowBlur = 0;
+
+            ctx.fillStyle = '#1a1a2e';
+            ctx.beginPath();
+            ctx.arc(ninja.x - 5, ninja.y - 3, 5, 0, Math.PI * 2);
+            ctx.fill();
+
+            if (gameOver) {
+                ctx.fillStyle = 'rgba(0, 0, 0, 0.7)';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+                
+                ctx.fillStyle = '#e94560';
+                ctx.font = 'bold 48px Segoe UI';
+                ctx.textAlign = 'center';
+                ctx.fillText('GAME OVER', canvas.width / 2, canvas.height / 2 - 20);
+                
+                ctx.fillStyle = '#fff';
+                ctx.font = '24px Segoe UI';
+                ctx.fillText(`Score: ${score}  Level: ${level}`, canvas.width / 2, canvas.height / 2 + 30);
+                ctx.fillText('Click to restart', canvas.width / 2, canvas.height / 2 + 70);
+                ctx.textAlign = 'left';
+            }
+        }
+
+        function gameLoop() {
+            update();
+            draw();
+            requestAnimationFrame(gameLoop);
+        }
+
+        canvas.addEventListener('mousedown', (e) => {
+            if (gameOver) {
+                score = 0;
+                level = 1;
+                scoreEl.textContent = 0;
+                levelEl.textContent = 'Level 1';
+                init();
+                return;
+            }
+
+            let closestHook = null;
+            let minDist = 200;
+
+            for (let hook of levelData.hooks) {
+                let dx = hook.x - ninja.x;
+                let dy = hook.y - ninja.y;
+                let dist = Math.sqrt(dx * dx + dy * dy);
+                if (dist < minDist && hook.y < ninja.y) {
+                    minDist = dist;
+                    closestHook = hook;
+                }
+            }
+
+            if (closestHook) {
+                ninja.swinging = true;
+                ninja.hooked = true;
+                ninja.hookX = closestHook.x;
+                ninja.hookY = closestHook.y;
+                ninja.ropeLength = minDist;
+            }
+        });
+
+        canvas.addEventListener('mouseup', () => {
+            if (ninja.swinging && ninja.hooked) {
+                let dx = ninja.x - ninja.hookX;
+                let dy = ninja.y - ninja.hookY;
+                let dist = Math.sqrt(dx * dx + dy * dy);
+                
+                ninja.vx = (dx / dist) * 12;
+                ninja.vy = (dy / dist) * 12 - 5;
+            }
+            ninja.swinging = false;
+            ninja.hooked = false;
+        });
+
+        init();
+        gameLoop();
+    </script>
+</body>
+</html>
