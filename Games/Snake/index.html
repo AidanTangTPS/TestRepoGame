@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Classic Snake Game</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="game-container">
+        <div class="game-header">
+            <h1>CLASSIC SNAKE</h1>
+            <div class="score-container">
+                <span>SCORE: </span>
+                <span id="score">0</span>
+            </div>
+        </div>
+        
+        <canvas id="gameCanvas"></canvas>
+        
+        <div class="controls">
+            <div class="mobile-controls">
+                <button id="upBtn" class="control-btn">↑</button>
+                <div class="horizontal-controls">
+                    <button id="leftBtn" class="control-btn">←</button>
+                    <button id="rightBtn" class="control-btn">→</button>
+                </div>
+                <button id="downBtn" class="control-btn">↓</button>
+            </div>
+        </div>
+
+        <div class="game-over" id="gameOver">
+            <h2>GAME OVER!</h2>
+            <p>YOUR SCORE: <span id="finalScore">0</span></p>
+            <button id="restartBtn">PLAY AGAIN</button>
+        </div>
+
+        <div class="start-screen" id="startScreen">
+            <h2>CLASSIC SNAKE</h2>
+            <div class="difficulty">
+                <button class="difficulty-btn active" data-difficulty="easy">EASY</button>
+                <button class="difficulty-btn" data-difficulty="medium">MEDIUM</button>
+                <button class="difficulty-btn" data-difficulty="hard">HARD</button>
+            </div>
+            <button id="startBtn">START GAME</button>
+        </div>
+    </div>
+    <script src="game.js"></script>
+</body>
+</html> 

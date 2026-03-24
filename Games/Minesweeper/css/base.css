@@ -1,0 +1,28 @@
+body {
+  background-color: var(--base-color);
+  color: var(--text-color);
+  text-shadow: 0 0 1rem white;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  font-family: "Iosevka";
+  font-size: 4rem;
+}
+
+button {
+  background-color: var(--overlay-color);
+  color: var(--text-color);
+  text-shadow: 0 0 0.5rem white;
+  border-style: none;
+  border: 0.3rem solid var(--text-color);
+  border-radius: 1rem;
+  padding: 1rem;
+}
+
+button:hover {
+  box-shadow: 0 0 1rem white;
+  color: white;
+  border: 0.3rem solid white;
+}

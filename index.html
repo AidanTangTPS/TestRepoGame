@@ -519,10 +519,20 @@
    * url: path to your self-hosted game (e.g. "/games/snake/index.html")
    * icon: any emoji or short string for the thumbnail
    */
-  const GAMES = [ { id: 1, title: "2048", cat: "classic", icon: "Screenshot_20260104_185315_Photos (3).jpg", desc: "its 2048.", url: "https://aidantangtps.github.io/TestRepoGame/Games/2048/index.html" },{ id: 2, title: "Age of War", cat: "strategy", icon: "Screenshot 2025-06-23 1.27.08 PM (4).png", desc: "oldie but a goldie.", url: "https://aidantangtps.github.io/TestRepoGame/Games/AgeOfWar/index.html" },{ id: 3, title: "Alsen Character AI", cat: "riddle", icon: "download (8).png", desc: "oldie but a goldie.", url: "https://aidantangtps.github.io/TestRepoGame/Games/Character%20AI/Alsen.html" },
-                 { id: 4, title: "Slope", cat: "puzzle", icon: "Screenshot_20260104_185315_Photos (3).jpg", desc: "its slope.", url: "https://aidantangtps.github.io/TestRepoGame/Games/Slope/index.html" },
- 
-                ];
+  const GAMES = [
+    { id: 1, title: "2048", cat: "classic", icon: "Screenshot_20260104_185315_Photos (3).jpg", desc: "its 2048.", url: "https://aidantangtps.github.io/TestRepoGame/Games/2048/index.html" },
+    { id: 2, title: "Age of War", cat: "strategy", icon: "Screenshot 2025-06-23 1.27.08 PM (4).png", desc: "oldie but a goldie.", url: "https://aidantangtps.github.io/TestRepoGame/Games/AgeOfWar/index.html" },
+    { id: 3, title: "Alsen Character AI", cat: "riddle", icon: "download (8).png", desc: "oldie but a goldie.", url: "https://aidantangtps.github.io/TestRepoGame/Games/Character%20AI/Alsen.html" },
+    { id: 4, title: "Slope", cat: "puzzle", icon: "Screenshot_20260104_185315_Photos (3).jpg", desc: "its slope.", url: "https://aidantangtps.github.io/TestRepoGame/Games/Slope/index.html" },
+    { id: 5, title: "Snake", cat: "classic", icon: "🐍", desc: "Classic snake game with modern neon style.", url: "Games/Snake/index.html" },
+    { id: 6, title: "Minesweeper", cat: "puzzle", icon: "💣", desc: "Classic mine clearing puzzle game.", url: "Games/Minesweeper/index.html" },
+    { id: 7, title: "Breakout", cat: "action", icon: "🧱", desc: "Brick breaker with power-ups.", url: "Games/Breakout/index.html" },
+    { id: 8, title: "Flappy Bird", cat: "action", icon: "🐦", desc: "Tap to fly through pipes.", url: "Games/FlappyBird/index.html" },
+    { id: 9, title: "Hextris", cat: "puzzle", icon: "⬡", desc: "Hexagonal twist on Tetris.", url: "Games/Hextris/index.html" },
+    { id: 10, title: "Pong", cat: "classic", icon: "🏓", desc: "Classic table tennis game.", url: "Games/Pong/index.html" },
+    { id: 11, title: "Tic Tac Toe", cat: "puzzle", icon: "⭕", desc: "Classic X and O game.", url: "Games/TicTacToe/index.html" },
+    { id: 12, title: "Janko Character AI", cat: "riddle", icon: "🤖", desc: "Quirky chatbot with multiple modes.", url: "https://aidantangtps.github.io/TestRepoGame/Games/Character%20AI/Ian.html" }
+  ];
 
   const grid     = document.getElementById('grid');
   const noRes    = document.getElementById('no-results');
@@ -555,8 +565,9 @@
       // --- Updated HTML generation ---
       card.innerHTML = `
         <div class="thumb">
-          <!-- Conditionally render the image if an icon path is provided -->
-          ${g.icon ? `<img src="${g.icon}" alt="${g.title} icon" style="max-width: 100%; max-height: 100%; object-fit: contain;">` : ''}
+          ${g.icon && g.icon.match(/\.(jpg|png|jpeg|gif|svg|webp)$/i) 
+            ? `<img src="${g.icon}" alt="${g.title} icon" style="max-width: 100%; max-height: 100%; object-fit: contain;">` 
+            : (g.icon || '')}
         </div>
         <div class="card-body">
           <div class="card-top">

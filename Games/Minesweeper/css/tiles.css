@@ -1,0 +1,94 @@
+#minesweeper-grid {
+  width: 100%;
+  height: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.tile {
+  aspect-ratio: 1 / 1;
+  border-radius: 0.2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 0.1rem solid var(--base-color);
+}
+
+.tile-hidden {
+  background-color: var(--subtle-color);
+  box-shadow: 0 0 1rem var(--hl-med-color) inset;
+  background-image: linear-gradient(to bottom, #fff, transparent);
+}
+
+.tile-hidden:hover {
+  box-shadow: 0 0 2.2rem var(--hl-med-color) inset;
+}
+
+.tile-revealed {
+  background-color: var(--hl-high-color);
+  box-shadow: 0 0 1rem black inset;
+}
+
+.tile-flagged:hover {
+  box-shadow: 0 0 1rem var(--hl-med-color) inset;
+}
+
+.tile-flagged img,
+.tile-bomb img {
+  height: 60%;
+  filter: drop-shadow(0 0.1rem 0.2rem black);
+}
+
+.tile-hit {
+  background-color: var(--love-color);
+}
+
+.tile-misflag {
+  background-color: var(--gold-color);
+}
+
+.tile-number {
+  font-size: calc(var(--tile-size) * 0.6);
+  text-shadow: 0 0 0.3rem var(--base-color), 0 0.2rem .5rem black;
+  overflow: hidden;
+  font-weight: bold;
+}
+
+.tile-highlight {
+  background-color: var(--hl-med-color);
+}
+
+/* --- */
+
+.tile-number-1 {
+  color: dodgerblue;
+}
+
+.tile-number-2 {
+  color: mediumseagreen;
+}
+
+.tile-number-3 {
+  color: red;
+}
+
+.tile-number-4 {
+  color: violet;
+}
+
+.tile-number-5 {
+  color: maroon;
+}
+
+.tile-number-6 {
+  color: cadetblue;
+}
+
+.tile-number-7 {
+  color: black;
+}
+
+.tile-number-8 {
+  color: grey;
+}
