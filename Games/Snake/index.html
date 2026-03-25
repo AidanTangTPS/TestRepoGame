@@ -1,51 +1,62 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Classic Snake Game</title>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap">
-    <link rel="stylesheet" href="styles.css">
+    <title>贪吃蛇游戏</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div class="game-container">
         <div class="game-header">
-            <h1>CLASSIC SNAKE</h1>
-            <div class="score-container">
-                <span>SCORE: </span>
-                <span id="score">0</span>
+            <h1>🐍 贪吃蛇游戏</h1>
+            <div class="score-board">
+                <div class="score">
+                    <span>得分: </span>
+                    <span id="current-score">0</span>
+                </div>
+                <div class="high-score">
+                    <span>最高分: </span>
+                    <span id="high-score">0</span>
+                </div>
             </div>
         </div>
         
-        <canvas id="gameCanvas"></canvas>
+        <div class="game-area">
+            <canvas id="gameCanvas" width="400" height="400"></canvas>
+            <div id="game-over" class="game-over hidden">
+                <h2>游戏结束!</h2>
+                <p>你的得分: <span id="final-score">0</span></p>
+                <button id="restart-btn" class="btn">重新开始</button>
+            </div>
+        </div>
         
         <div class="controls">
+            <div class="instructions">
+                <h3>游戏说明:</h3>
+                <p>• 使用 WASD 或方向键控制蛇的移动</p>
+                <p>• 吃到食物可以增长身体和得分</p>
+                <p>• 避免撞到墙壁或自己的身体</p>
+            </div>
+            
             <div class="mobile-controls">
-                <button id="upBtn" class="control-btn">↑</button>
-                <div class="horizontal-controls">
-                    <button id="leftBtn" class="control-btn">←</button>
-                    <button id="rightBtn" class="control-btn">→</button>
+                <div class="control-row">
+                    <button class="control-btn" data-direction="up">↑</button>
                 </div>
-                <button id="downBtn" class="control-btn">↓</button>
+                <div class="control-row">
+                    <button class="control-btn" data-direction="left">←</button>
+                    <button class="control-btn" data-direction="down">↓</button>
+                    <button class="control-btn" data-direction="right">→</button>
+                </div>
             </div>
-        </div>
-
-        <div class="game-over" id="gameOver">
-            <h2>GAME OVER!</h2>
-            <p>YOUR SCORE: <span id="finalScore">0</span></p>
-            <button id="restartBtn">PLAY AGAIN</button>
-        </div>
-
-        <div class="start-screen" id="startScreen">
-            <h2>CLASSIC SNAKE</h2>
-            <div class="difficulty">
-                <button class="difficulty-btn active" data-difficulty="easy">EASY</button>
-                <button class="difficulty-btn" data-difficulty="medium">MEDIUM</button>
-                <button class="difficulty-btn" data-difficulty="hard">HARD</button>
+            
+            <div class="game-buttons">
+                <button id="start-btn" class="btn btn-primary">开始游戏</button>
+                <button id="pause-btn" class="btn btn-secondary">暂停</button>
             </div>
-            <button id="startBtn">START GAME</button>
         </div>
     </div>
+    
     <script src="game.js"></script>
 </body>
-</html> 
+</html>
