@@ -5,22 +5,22 @@ class SnakeGame {
         this.gridSize = 20;
         this.tileCount = this.canvas.width / this.gridSize;
 
-        // 游戏状态
+        // Game state
         this.gameRunning = false;
         this.gamePaused = false;
         this.gameLoop = null;
 
-        // 蛇的初始状态
+        // Snake initial state
         this.snake = [
             {x: 10, y: 10}
         ];
         this.dx = 0;
         this.dy = 0;
 
-        // 食物位置
+        // Food position
         this.food = {x: 15, y: 15};
 
-        // 分数
+        // Score
         this.score = 0;
         this.highScore = localStorage.getItem('snakeHighScore') || 0;
 
@@ -34,7 +34,7 @@ class SnakeGame {
     }
 
     setupEventListeners() {
-        // 键盘控制
+        // Keyboard controls
         document.addEventListener('keydown', (e) => {
             if (!this.gameRunning || this.gamePaused) return;
 
@@ -74,7 +74,7 @@ class SnakeGame {
             }
         });
 
-        // 移动端触摸控制
+        // Mobile touch controls
         document.querySelectorAll('.control-btn').forEach(btn => {
             btn.addEventListener('click', () => {
                 if (!this.gameRunning || this.gamePaused) return;
@@ -109,7 +109,7 @@ class SnakeGame {
             });
         });
 
-        // 游戏控制按钮
+        // Game control buttons
         document.getElementById('start-btn').addEventListener('click', () => {
             this.startGame();
         });
@@ -129,7 +129,7 @@ class SnakeGame {
         this.gameRunning = true;
         this.gamePaused = false;
 
-        // 设置初始移动方向（向右）
+        // Set initial movement direction (right)
         if (this.dx === 0 && this.dy === 0) {
             this.dx = 1;
             this.dy = 0;
@@ -140,7 +140,7 @@ class SnakeGame {
             this.drawGame();
         }, 150);
 
-        document.getElementById('start-btn').textContent = '游戏进行中...';
+        document.getElementById('start-btn').textContent = 'Playing...';
         document.getElementById('start-btn').disabled = true;
     }
 
@@ -151,26 +151,26 @@ class SnakeGame {
 
         if (this.gamePaused) {
             clearInterval(this.gameLoop);
-            document.getElementById('pause-btn').textContent = '继续';
+            document.getElementById('pause-btn').textContent = 'Resume';
         } else {
             this.gameLoop = setInterval(() => {
                 this.update();
                 this.drawGame();
             }, 150);
-            document.getElementById('pause-btn').textContent = '暂停';
+            document.getElementById('pause-btn').textContent = 'Pause';
         }
     }
 
     update() {
         if (this.gamePaused) return;
 
-        // 如果蛇还没有移动方向，不进行更新
+        // If snake hasn't started moving, don't update
         if (this.dx === 0 && this.dy === 0) return;
 
-        // 移动蛇头
+        // Move snake head
         const head = {x: this.snake[0].x + this.dx, y: this.snake[0].y + this.dy};
 
-        // 检查碰撞
+        // Check collision
         if (this.checkCollision(head)) {
             this.gameOver();
             return;
@@ -178,7 +178,7 @@ class SnakeGame {
 
         this.snake.unshift(head);
 
-        // 检查是否吃到食物
+        // Check if food is eaten
         if (head.x === this.food.x && head.y === this.food.y) {
             this.score += 10;
             this.updateScoreDisplay();
@@ -189,12 +189,12 @@ class SnakeGame {
     }
 
     checkCollision(head) {
-        // 检查墙壁碰撞
+        // Check wall collision
         if (head.x < 0 || head.x >= this.tileCount || head.y < 0 || head.y >= this.tileCount) {
             return true;
         }
 
-        // 检查自身碰撞
+        // Check self collision
         for (let segment of this.snake) {
             if (head.x === segment.x && head.y === segment.y) {
                 return true;
@@ -214,20 +214,20 @@ class SnakeGame {
     }
 
     drawGame() {
-        // 清空画布
+        // Clear canvas
         this.ctx.fillStyle = '#1a202c';
         this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
 
-        // 绘制网格
+        // Draw grid
         this.drawGrid();
 
-        // 绘制蛇
+        // Draw snake
         this.drawSnake();
 
-        // 绘制食物
+        // Draw food
         this.drawFood();
 
-        // 如果游戏暂停，显示暂停信息
+        // If game is paused, show pause message
         if (this.gamePaused) {
             this.drawPauseScreen();
         }
@@ -253,10 +253,10 @@ class SnakeGame {
     drawSnake() {
         this.snake.forEach((segment, index) => {
             if (index === 0) {
-                // 蛇头
+                // Snake head
                 this.ctx.fillStyle = '#38a169';
             } else {
-                // 蛇身
+                // Snake body
                 this.ctx.fillStyle = '#48bb78';
             }
 
@@ -267,7 +267,7 @@ class SnakeGame {
                 this.gridSize - 2
             );
 
-            // 添加圆角效果
+            // Add rounded corners
             this.ctx.beginPath();
             this.ctx.roundRect(
                 segment.x * this.gridSize + 2,
@@ -300,52 +300,52 @@ class SnakeGame {
         this.ctx.fillStyle = 'white';
         this.ctx.font = '24px Arial';
         this.ctx.textAlign = 'center';
-        this.ctx.fillText('游戏暂停', this.canvas.width / 2, this.canvas.height / 2);
+        this.ctx.fillText('PAUSED', this.canvas.width / 2, this.canvas.height / 2);
     }
 
     gameOver() {
         this.gameRunning = false;
         clearInterval(this.gameLoop);
 
-        // 更新最高分
+        // Update high score
         if (this.score > this.highScore) {
             this.highScore = this.score;
             localStorage.setItem('snakeHighScore', this.highScore);
             this.updateScoreDisplay();
         }
 
-        // 显示游戏结束界面
+        // Show game over screen
         document.getElementById('final-score').textContent = this.score;
         document.getElementById('game-over').classList.remove('hidden');
     }
 
     restartGame() {
-        // 重置游戏状态
+        // Reset game state
         this.gameRunning = false;
         this.gamePaused = false;
         clearInterval(this.gameLoop);
 
-        // 重置蛇
+        // Reset snake
         this.snake = [{x: 10, y: 10}];
         this.dx = 0;
         this.dy = 0;
 
-        // 重置分数
+        // Reset score
         this.score = 0;
         this.updateScoreDisplay();
 
-        // 重新生成食物
+        // Generate new food
         this.generateFood();
 
-        // 隐藏游戏结束界面
+        // Hide game over screen
         document.getElementById('game-over').classList.add('hidden');
 
-        // 重置按钮状态
-        document.getElementById('start-btn').textContent = '开始游戏';
+        // Reset button states
+        document.getElementById('start-btn').textContent = 'Start Game';
         document.getElementById('start-btn').disabled = false;
-        document.getElementById('pause-btn').textContent = '暂停';
+        document.getElementById('pause-btn').textContent = 'Pause';
 
-        // 重绘游戏
+        // Redraw game
         this.drawGame();
     }
 
@@ -355,7 +355,7 @@ class SnakeGame {
     }
 }
 
-// 添加圆角矩形支持（如果浏览器不支持）
+// Add rounded rectangle support (if browser doesn't support it)
 if (!CanvasRenderingContext2D.prototype.roundRect) {
     CanvasRenderingContext2D.prototype.roundRect = function(x, y, width, height, radius) {
         this.beginPath();
@@ -372,7 +372,7 @@ if (!CanvasRenderingContext2D.prototype.roundRect) {
     };
 }
 
-// 初始化游戏
+// Initialize game
 document.addEventListener('DOMContentLoaded', () => {
     new SnakeGame();
 });

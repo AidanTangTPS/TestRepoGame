@@ -1,22 +1,22 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>贪吃蛇游戏</title>
+    <title>Snake Game</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div class="game-container">
         <div class="game-header">
-            <h1>🐍 贪吃蛇游戏</h1>
+            <h1>Snake Game</h1>
             <div class="score-board">
                 <div class="score">
-                    <span>得分: </span>
+                    <span>Score: </span>
                     <span id="current-score">0</span>
                 </div>
                 <div class="high-score">
-                    <span>最高分: </span>
+                    <span>High Score: </span>
                     <span id="high-score">0</span>
                 </div>
             </div>
@@ -25,18 +25,18 @@
         <div class="game-area">
             <canvas id="gameCanvas" width="400" height="400"></canvas>
             <div id="game-over" class="game-over hidden">
-                <h2>游戏结束!</h2>
-                <p>你的得分: <span id="final-score">0</span></p>
-                <button id="restart-btn" class="btn">重新开始</button>
+                <h2>Game Over!</h2>
+                <p>Your Score: <span id="final-score">0</span></p>
+                <button id="restart-btn" class="btn">Play Again</button>
             </div>
         </div>
         
         <div class="controls">
             <div class="instructions">
-                <h3>游戏说明:</h3>
-                <p>• 使用 WASD 或方向键控制蛇的移动</p>
-                <p>• 吃到食物可以增长身体和得分</p>
-                <p>• 避免撞到墙壁或自己的身体</p>
+                <h3>How to Play:</h3>
+                <p>Use WASD or Arrow keys to control the snake</p>
+                <p>Eat food to grow and earn points</p>
+                <p>Avoid hitting walls or yourself</p>
             </div>
             
             <div class="mobile-controls">
@@ -51,8 +51,8 @@
             </div>
             
             <div class="game-buttons">
-                <button id="start-btn" class="btn btn-primary">开始游戏</button>
-                <button id="pause-btn" class="btn btn-secondary">暂停</button>
+                <button id="start-btn" class="btn btn-primary">Start Game</button>
+                <button id="pause-btn" class="btn btn-secondary">Pause</button>
             </div>
         </div>
     </div>

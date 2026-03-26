@@ -16,7 +16,7 @@
       --neon-b:    #00cfff;
       --neon-y:    #ffe600;
       --neon-r:    #ff3c6e;
-      --neon-p:    #bf5fff;
+      --neon-s:    #00cfff;
       --text:      #c8d0e0;
       --muted:     #5a6070;
       --font-px:   'Press Start 2P', monospace;
@@ -199,9 +199,9 @@
 
     .cat-btn[data-cat="action"].active   { background: var(--neon-r); border-color: var(--neon-r); box-shadow: 0 0 10px rgba(255,60,110,0.4); }
     .cat-btn[data-cat="puzzle"].active   { background: var(--neon-b); border-color: var(--neon-b); box-shadow: 0 0 10px rgba(0,207,255,0.4); }
-    .cat-btn[data-cat="strategy"].active { background: var(--neon-p); border-color: var(--neon-p); box-shadow: 0 0 10px rgba(191,95,255,0.4); }
+    .cat-btn[data-cat="strategy"].active { background: var(--neon-s); border-color: var(--neon-s); box-shadow: 0 0 10px rgba(0,207,255,0.4); }
     .cat-btn[data-cat="classic"].active  { background: var(--neon-y); border-color: var(--neon-y); box-shadow: 0 0 10px rgba(255,230,0,0.4); }
-    .cat-btn[data-cat="riddle"].active  { background: var(--neon-y); border-color: var(--neon-y); box-shadow: 0 0 10px rgba(120,230,0,0.4); }
+    .cat-btn[data-cat="riddle"].active  { background: var(--neon-y); border-color: var(--neon-y); box-shadow: 0 0 10px rgba(255,230,0,0.4); }
 
     /* ── GRID ── */
     #grid {
@@ -246,8 +246,8 @@
     .card[data-cat="action"]:hover   { box-shadow: 0 0 14px rgba(255,60,110,0.2), 0 4px 20px rgba(0,0,0,0.5); }
     .card[data-cat="puzzle"]   { --accent: var(--neon-b); }
     .card[data-cat="puzzle"]:hover   { box-shadow: 0 0 14px rgba(0,207,255,0.2), 0 4px 20px rgba(0,0,0,0.5); }
-    .card[data-cat="strategy"] { --accent: var(--neon-p); }
-    .card[data-cat="strategy"]:hover { box-shadow: 0 0 14px rgba(191,95,255,0.2), 0 4px 20px rgba(0,0,0,0.5); }
+    .card[data-cat="strategy"] { --accent: var(--neon-s); }
+    .card[data-cat="strategy"]:hover { box-shadow: 0 0 14px rgba(0,207,255,0.2), 0 4px 20px rgba(0,0,0,0.5); }
     .card[data-cat="classic"]  { --accent: var(--neon-y); }
     .card[data-cat="classic"]:hover  { box-shadow: 0 0 14px rgba(255,230,0,0.2), 0 4px 20px rgba(0,0,0,0.5); }
 
@@ -275,11 +275,11 @@
       );
     }
 
-    .card[data-cat="all"]      .thumb { background: linear-gradient(135deg, #0d1f14, #0d1a22); }
-    .card[data-cat="action"]   .thumb { background: linear-gradient(135deg, #1f0d0d, #220d16); }
-    .card[data-cat="puzzle"]   .thumb { background: linear-gradient(135deg, #0d1320, #0d1c26); }
-    .card[data-cat="strategy"] .thumb { background: linear-gradient(135deg, #140d20, #1a0d26); }
-    .card[data-cat="classic"]  .thumb { background: linear-gradient(135deg, #201800, #26200d); }
+    .card[data-cat="all"]      .thumb { background: #0d1f14; }
+    .card[data-cat="action"]   .thumb { background: #1f0d0d; }
+    .card[data-cat="puzzle"]   .thumb { background: #0d1320; }
+    .card[data-cat="strategy"] .thumb { background: #0d1320; }
+    .card[data-cat="classic"]  .thumb { background: #201800; }
 
     /* ── CARD BODY ── */
     .card-body {
@@ -317,7 +317,7 @@
 
     .card[data-cat="action"]   .cat-tag { color: var(--neon-r); border-color: var(--neon-r); }
     .card[data-cat="puzzle"]   .cat-tag { color: var(--neon-b); border-color: var(--neon-b); }
-    .card[data-cat="strategy"] .cat-tag { color: var(--neon-p); border-color: var(--neon-p); }
+    .card[data-cat="strategy"] .cat-tag { color: var(--neon-s); border-color: var(--neon-s); }
     .card[data-cat="classic"]  .cat-tag { color: var(--neon-y); border-color: var(--neon-y); }
 
     .card-desc {
@@ -526,12 +526,13 @@
     { id: 4, title: "Soccer Random", cat: "action", icon: "⚽", desc: "Chaotic physics-based soccer with random elements.", url: "Games/SoccerRandom/index.html" },
     { id: 5, title: "Basket Random", cat: "action", icon: "🏀", desc: "Wacky basketball with unpredictable physics.", url: "Games/BasketRandom/index.html" },
     { id: 6, title: "Volley Random", cat: "action", icon: "🏐", desc: "Bizarre volleyball with silly physics mechanics.", url: "Games/VolleyRandom/index.html" },
-    { id: 7, title: "Ovo", cat: "action", icon: "🧑", desc: "Fast-paced parkour platformer with slick movements.", url: "Games/Ovo/1.4/index.html" },
+    { id: 7, title: "Ovo", cat: "action", icon: "🧑", desc: "Fast-paced parkour platformer with slick movements.", url: "Games/Ovo/1.4.5/index.html" },
     { id: 8, title: "Run 3", cat: "action", icon: "🚀", desc: "Endless space runner through 3D tunnels.", url: "Games/Run3/tn6pS9dCf37xAhkJv/index.html" },
     { id: 9, title: "Snake", cat: "classic", icon: "🐍", desc: "Classic snake game. Eat food, grow, don't hit the wall!", url: "Games/Snake/index.html" },
     { id: 10, title: "Chrome Dino", cat: "classic", icon: "🦖", desc: "The famous offline Chrome dinosaur game.", url: "Games/ChromeDino/dino.html" },
     { id: 11, title: "Breakout", cat: "classic", icon: "🧱", desc: "Classic arcade breakout. Break all the bricks!", url: "Games/BreakoutClassic/index.html" },
-    { id: 12, title: "T-Rex Run", cat: "classic", icon: "🦕", desc: "Dino runner - jump over cacti and travel as far as you can.", url: "Games/ChromeDino/dino.html" }
+    { id: 12, title: "Hextris", cat: "classic", icon: "🧱", desc: "Fast-paced hexagonal Tetris. Clear lines to score!", url: "Games/Hextris/index.html" },
+    { id: 13, title: "Flappy Bird", cat: "classic", icon: "🐦", desc: "Tap to flap. Avoid pipes and travel as far as you can!", url: "Games/FlappyBird/index.html" }
   ];
 
   const grid     = document.getElementById('grid');
