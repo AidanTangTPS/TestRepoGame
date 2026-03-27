@@ -1,0 +1,26 @@
+.bento-grid {
+  width: 100%;
+  min-height: 400px;
+}
+
+.layout {
+  min-height: 100%;
+}
+
+.react-grid-item {
+  transition: all 0.15s ease;
+}
+
+.react-grid-item.cssTransforms {
+  transition-property: transform, width, height;
+}
+
+.react-grid-placeholder {
+  background: var(--accent);
+  opacity: 0.2;
+  border-radius: var(--radius);
+}
+
+.react-grid-item > .react-resizable-handle {
+  display: none;
+}

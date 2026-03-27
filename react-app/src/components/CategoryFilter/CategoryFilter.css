@@ -1,0 +1,37 @@
+.category-filter {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  padding: 0.5rem 0;
+}
+
+.category-filter__btn {
+  padding: 0.5rem 1rem;
+  font-size: 0.8rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-muted);
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  transition: all 0.15s ease;
+}
+
+.category-filter__btn:hover {
+  color: var(--text);
+  border-color: var(--cat-color, var(--text-muted));
+}
+
+.category-filter__btn.active {
+  color: var(--bg);
+  border-color: var(--cat-color);
+  box-shadow: 0 0 16px color-mix(in srgb, var(--cat-color) 40%, transparent);
+}
+
+@media (max-width: 480px) {
+  .category-filter__btn {
+    padding: 0.4rem 0.75rem;
+    font-size: 0.7rem;
+  }
+}
