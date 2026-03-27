@@ -8,7 +8,7 @@ export function useGames() {
   useEffect(() => {
     let cancelled = false;
 
-    fetch('/games.json')
+    fetch('./games.json')
       .then((res) => {
         if (!res.ok) throw new Error('Failed to load games');
         return res.json();
