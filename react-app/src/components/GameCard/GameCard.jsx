@@ -1,6 +1,5 @@
 import { motion } from 'framer-motion';
-import { Play, Heart } from 'lucide-react';
-import { CATEGORY_COLORS } from '../../data/constants';
+import { Play } from 'lucide-react';
 import './GameCard.css';
 
 export default function GameCard({
@@ -12,75 +11,56 @@ export default function GameCard({
 }) {
   if (!game) return null;
 
-  const categoryColor = CATEGORY_COLORS[game.cat] || '#00ff88';
-
   const cardVariants = {
-    hidden: { opacity: 0, y: 20 },
+    hidden: { opacity: 0, y: 10 },
     visible: { opacity: 1, y: 0 },
   };
 
-  const sizeClasses = {
-    featured: 'game-card--featured',
-    wide: 'game-card--wide',
-    standard: '',
+  const handleClick = () => {
+    onPlay(game);
+  };
+
+  const handleFavoriteClick = (e) => {
+    e.stopPropagation();
+    onToggleFavorite(game.id);
   };
 
   return (
     <motion.article
-      className={`game-card ${sizeClasses[size] || ''}`}
+      className="game-card"
       variants={cardVariants}
       initial="hidden"
       animate="visible"
-      whileHover={{ scale: 1.02 }}
-      transition={{ duration: 0.15 }}
-      style={
-        {
-          '--accent': categoryColor,
-        }
-      }
+      whileHover={{ scale: 1.01, backgroundColor: 'var(--bg-card-hover)' }}
+      transition={{ duration: 0.1 }}
+      onClick={handleClick}
+      role="button"
+      tabIndex={0}
+      onKeyDown={(e) => e.key === 'Enter' && handleClick()}
+      aria-label={`Play ${game.title}`}
     >
       <div className="game-card__thumb">
         <span className="game-card__icon">{game.icon}</span>
       </div>
 
-      <div className="game-card__body">
+      <div className="game-card__content">
         <div className="game-card__header">
-          <h3 className="game-card__title">{game.title}</h3>
           <span className="game-card__category">{game.cat}</span>
-        </div>
-
-        {size !== 'standard' && (
-          <p className="game-card__desc">{game.desc}</p>
-        )}
-
-        <div className="game-card__actions">
-          <motion.button
-            className="game-card__play"
-            onClick={() => onPlay(game)}
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            aria-label={`Play ${game.title}`}
-          >
-            <Play size={16} />
-            <span>Play</span>
-          </motion.button>
-
-          <motion.button
+          <button
             className={`game-card__fav ${isFavorite ? 'active' : ''}`}
-            onClick={(e) => {
-              e.stopPropagation();
-              onToggleFavorite(game.id);
-            }}
-            whileHover={{ scale: 1.1 }}
-            whileTap={{ scale: 0.9 }}
+            onClick={handleFavoriteClick}
             aria-label={isFavorite ? 'Remove from favorites' : 'Add to favorites'}
           >
-            <Heart size={16} fill={isFavorite ? 'currentColor' : 'none'} />
-          </motion.button>
+            {isFavorite ? '★' : '☆'}
+          </button>
         </div>
+        <h3 className="game-card__title">{game.title}</h3>
+        <p className="game-card__desc">{game.desc}</p>
       </div>
 
-      <div className="game-card__glow" />
+      <div className="game-card__play-indicator">
+        <Play size={12} />
+      </div>
     </motion.article>
   );
 }

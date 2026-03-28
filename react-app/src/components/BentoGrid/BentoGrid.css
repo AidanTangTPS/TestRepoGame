@@ -1,26 +1,50 @@
 .bento-grid {
-  width: 100%;
-  min-height: 400px;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
 }
 
-.layout {
-  min-height: 100%;
+.bento-grid__featured {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
 }
 
-.react-grid-item {
-  transition: all 0.15s ease;
+.bento-grid__standard {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1rem;
 }
 
-.react-grid-item.cssTransforms {
-  transition-property: transform, width, height;
+@media (max-width: 1200px) {
+  .bento-grid__standard {
+    grid-template-columns: repeat(3, 1fr);
+  }
 }
 
-.react-grid-placeholder {
-  background: var(--accent);
-  opacity: 0.2;
-  border-radius: var(--radius);
+@media (max-width: 900px) {
+  .bento-grid__featured {
+    grid-template-columns: 1fr;
+  }
+
+  .bento-grid__standard {
+    grid-template-columns: repeat(2, 1fr);
+  }
 }
 
-.react-grid-item > .react-resizable-handle {
-  display: none;
+@media (max-width: 600px) {
+  .bento-grid__standard {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.75rem;
+  }
+
+  .bento-grid__featured {
+    gap: 0.75rem;
+  }
+}
+
+@media (max-width: 400px) {
+  .bento-grid__standard {
+    grid-template-columns: 1fr;
+  }
 }

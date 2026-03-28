@@ -1,18 +1,14 @@
 :root {
-  --bg: #000000;
-  --bg-card: #121212;
-  --bg-card-hover: #1a1a1a;
-  --border: #2a2a2a;
-  --text: #ffffff;
-  --text-muted: #888888;
-  --neon-green: #00ff88;
-  --neon-blue: #00cfff;
-  --neon-red: #ff3c6e;
-  --neon-yellow: #ffe600;
-  --neon-purple: #a855f7;
-  --neon-orange: #ff9500;
-  --radius: 20px;
-  --radius-lg: 28px;
+  --bg: #09090b;
+  --bg-card: #18181b;
+  --bg-card-hover: #27272a;
+  --border: #27272a;
+  --border-hover: #3f3f46;
+  --text: #fafafa;
+  --text-muted: #71717a;
+  --accent: #a1a1aa;
+  --radius: 8px;
+  --radius-lg: 12px;
 }
 
 *,
