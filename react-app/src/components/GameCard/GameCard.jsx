@@ -4,7 +4,6 @@ import './GameCard.css';
 
 export default function GameCard({
   game,
-  size = 'standard',
   isFavorite,
   onToggleFavorite,
   onPlay,

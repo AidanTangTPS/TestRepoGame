@@ -12,7 +12,7 @@ import './App.css';
 
 export default function App() {
   const { games, loading, error } = useGames();
-  const { favorites, toggleFavorite, isFavorite } = useFavorites();
+  const { favorites, toggleFavorite } = useFavorites();
   const [search, setSearch] = useState('');
   const [activeCategory, setActiveCategory] = useState('all');
   const [selectedGame, setSelectedGame] = useState(null);

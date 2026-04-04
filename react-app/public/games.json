@@ -124,5 +124,14 @@
     "desc": "Chat with an AI character.",
     "url": "Games/Character AI/Alsen.html",
     "featured": false
+  },
+  {
+    "id": 15,
+    "title": "QWOP",
+    "cat": "sports",
+    "icon": "🏃",
+    "desc": "Infamously difficult ragdoll running. Control thighs and calves with QWOP keys!",
+    "url": "Games/QwopRemake/index.html",
+    "featured": false
   }
 ]

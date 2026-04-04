@@ -7,25 +7,12 @@ export default function Skeleton({ variant = 'card' }) {
       <div className="skeleton skeleton--card">
         <div className="skeleton__thumb" />
         <div className="skeleton__body">
+          <div className="skeleton__header">
+            <div className="skeleton__badge" />
+            <div className="skeleton__fav" />
+          </div>
           <div className="skeleton__title" />
           <div className="skeleton__text" />
-          <div className="skeleton__button" />
-        </div>
-      </div>
-    );
-  }
-
-  if (variant === 'featured') {
-    return (
-      <div className="skeleton skeleton--featured">
-        <div className="skeleton__thumb" />
-        <div className="skeleton__body">
-          <div className="skeleton__title skeleton__title--lg" />
-          <div className="skeleton__text skeleton__text--lg" />
-          <div className="skeleton__actions">
-            <div className="skeleton__button skeleton__button--lg" />
-            <div className="skeleton__icon" />
-          </div>
         </div>
       </div>
     );
